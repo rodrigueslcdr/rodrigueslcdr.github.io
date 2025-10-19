@@ -1,0 +1,105 @@
+/* Estilo */
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f5f5f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Menu */
+header {
+    background-color: #222;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0 20px;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    font-size: 1.05em;
+}
+
+.menu a:hover,
+.menu a.ativo {
+    color: #f4a261;
+}
+
+/* Conteúdo da box */
+.profissional {
+    max-width: 1200px;
+    margin: 80px auto 80px auto;
+    padding: 40px 20px 40px 20px; /* espaço extra p/ rodapé fixo */
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+
+.profissional h1 {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/*  Experiências  */
+.experiencia {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    border-left: 4px solid green;
+    padding-left: 20px;
+}
+
+.periodo {
+    flex-basis: 100%;
+    font-weight: 700;
+    font-size: 1.1em;
+    color: #222;
+    margin-bottom: 8px;
+}
+
+.detalhes p {
+    text-align: justify;
+    line-height: 1.8; 
+    margin: 5px 0;
+}
+
+
+.detalhes p strong + strong { /* OBS AO CÓDIGO: Garantir alinhamento de itens do parágrafo */
+    margin-left: 40px; /* desloca o segundo trecho em strong */
+    display: inline-block;
+    min-width: 200px; /* garante alinhamento entre parágrafos */
+}
+
+.detalhes strong {
+    color: #000;
+    font-weight: 600;
+}
+
+/* Rodapé */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    background-color: #222;
+    color: #fff;
+    font-size: 0.95em;
+}

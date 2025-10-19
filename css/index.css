@@ -1,0 +1,99 @@
+/* Estilo */
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f5f5f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* Menu */
+header {
+    background-color: #222;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0 20px;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    font-size: 1.05em;
+}
+
+.menu a:hover,
+.menu a.ativo {
+    color: #f4a261;
+}
+
+/*  Box "Sobre Mim"  */
+.sobre {
+    max-width: 1200px;
+    margin: 80px auto 80px auto;
+    padding: 40px 20px 40px 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+
+.texto-container p{
+    text-align: justify;
+    line-height: 1.8;
+}
+
+.texto-container a {
+    color: navy; 
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.texto-container a:visited {
+    color: #727878; 
+}
+
+.texto-container a:hover {
+    text-decoration: underline;
+    color: #333;
+}
+
+.foto-container {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.foto {
+    width: 380px;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ccc;
+}
+
+/*  Rodapé  */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px;
+    background-color: #222;
+    color: #fff;
+    font-size: 0.95em;
+}

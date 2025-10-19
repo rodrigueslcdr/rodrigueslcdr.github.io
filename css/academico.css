@@ -1,0 +1,560 @@
+/* Estilo */
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f5f5f0;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 70px; 
+}
+
+/* Menu */
+header {
+    background-color: #222;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0 20px;
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    font-size: 1.05em;
+}
+
+.menu a:hover,
+.menu a.ativo {
+    color: #f4a261;
+}
+
+/* Bloco Lateral - layout */
+.layout {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 1400px;
+    margin: 80px auto 80px auto; 
+    gap: 40px;
+}
+
+/* Bloco lateral - box conhecimentos e idiomas */
+.lateral {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    width: 350px; 
+    position: sticky;
+    top: 80px; 
+    align-self: flex-start;
+    flex-shrink: 0;
+}
+
+.conhecimentos,
+.idiomas {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+.conhecimentos h1, .idiomas h1 {
+    font-size: 1.4em;
+    color: #222;
+    margin-bottom: 15px;
+}
+
+.icones {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.icones img {
+    width: 60px;
+    height: auto;
+    margin: 6px;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+}
+
+.icones img:hover {
+    transform: scale(1.08);
+}
+
+.idiomas .idioma {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 12px;
+}
+
+.idiomas .idioma:last-child {
+    border-bottom: none;
+}
+
+.idioma img {
+    width: 30px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+.idioma strong {
+    font-size: 1.05em;
+    color: #222;
+    margin-right: 15px; 
+}
+
+
+.idioma-rating {
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+    margin-left: auto; 
+    padding-right: 5px; 
+}
+
+.nivel {
+    display: flex;
+    gap: 3px;
+    margin-top: 5px; 
+    margin-bottom: 0; 
+}
+
+.bar {
+    width: 12px;
+    height: 20px;
+    border-radius: 3px;
+    background-color: #ccc;
+}
+
+.full { background-color: #3fa34d; } 
+.light_green { background-color: #66ff66; } 
+.yellow { background-color: #FFDF22; } 
+.empty { background-color: #ddd; }
+
+.nivel-descricao {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #444;
+    margin-top: 0; 
+    margin-bottom: 0;
+}
+
+/* Definições box conteúdo principal */
+.conteudo-principal-wrapper {
+    flex: 2; 
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+
+/* Texto conteúdo principal */
+.formacao {
+    background-color: #fff;
+    padding: 50px 60px;
+    padding-bottom: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    min-height: 600px;
+    width: auto; 
+    margin-left: 0;
+}
+
+.formacao h1 {
+    font-size: 2.2em;
+    color: #111;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.formacao ul {
+    padding-left: 20px;
+}
+
+.formacao li {
+    margin-bottom: 10px;
+}
+
+.formacao li h3 {
+    color: #222;
+    margin-bottom: 5px;
+    font-size: 1.15em;
+}
+
+.formacao p {
+    margin: 0 0 10px 12px;
+    font-size: 1em;
+    color: #444;
+}
+
+/* Cards inferiores */
+.info-container {
+    max-width: none; 
+    margin: 0; 
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 40px;
+    padding-bottom: 3px;
+}
+
+.info-box {
+    background-color: #fff;
+    flex: 1;
+    min-width: 260px;
+    text-align: center;
+    padding: 30px 20px;
+    border-radius: 14px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.info-box:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 5px 14px rgba(0,0,0,0.2);
+}
+
+.info-box h2 {
+    margin-top: 15px;
+    font-size: 1.3em;
+    color: #111;
+}
+
+.info-box p {
+    margin-top: 8px;
+    font-size: 1.05em;
+    color: #333;
+}
+
+
+.hex {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto;
+    clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+}
+
+.hex img {
+    width: 40px;
+    height: 40px;
+    filter: brightness(0);
+}
+
+/* Def Overlay */
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(245, 245, 240, 0.97); 
+    z-index: 2000;
+    overflow-y: auto;
+    animation: fadeIn 0.3s ease;
+}
+
+.overlay-content {
+    max-width: 800px;
+    margin: 120px auto;
+    background-color: #fff;
+    padding: 40px 50px;
+    border-radius: 14px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    color: #222;
+}
+
+.overlay-content h2 {
+    text-align: center;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+.overlay-content p {
+    line-height: 1.7;
+    font-size: 1.05em;
+    color: #333;
+}
+
+.fechar {
+    position: absolute;
+    top: 25px;
+    right: 35px;
+    font-size: 2em;
+    color: #000;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.fechar:hover {
+    transform: scale(1.2);
+}
+
+/* Scrollbar personalizada */
+.overlay::-webkit-scrollbar {
+    width: 10px;
+}
+.overlay::-webkit-scrollbar-thumb {
+    background-color: #000;
+    border-radius: 6px;
+}
+
+/* Conteúdo de formação complementar */
+
+.formacao-complementar h2 {
+    font-size: 2em; 
+    color: #111;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.formacao-complementar ul {
+    list-style: none; 
+    padding: 0;
+}
+
+.curso-item {
+    margin-bottom: 25px; 
+    padding-left: 15px;
+    padding-bottom: 5px;
+    border-left: 4px solid #f4a261;
+    transition: background-color 0.3s ease;
+}
+
+.curso-item:hover {
+    background-color: #fafafa; 
+}
+
+/* Título do curso/workshop */
+.curso-titulo {
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 5px 0;
+}
+
+/* Detalhes (Instituição e Data) */
+.curso-detalhe {
+    font-size: 0.95em;
+    color: #555;
+    margin: 0;
+}
+
+/* Publicações */
+.publicacoes h2 {
+    font-size: 2em; 
+    color: #111;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.publicacoes ul {
+    list-style: none; 
+    padding: 0;
+}
+
+.publi-item {
+    margin-bottom: 25px; 
+    padding-left: 15px;
+    padding-bottom: 5px;
+    border-left: 4px solid purple; 
+    transition: background-color 0.3s ease;
+}
+
+.publi-item:hover {
+    background-color: #fafafa; 
+}
+
+/* Título da publicação */
+.publi-titulo {
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 5px 0;
+}
+
+/* Detalhes da publi */
+.publi-detalhe {
+    font-size: 0.95em;
+    color: #555;
+    margin: 0;
+}
+
+/* Atividades Acadêmicas*/
+.atividades h2 {
+    font-size: 2em; 
+    color: #111;
+    text-align: center;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.atividades ul {
+    list-style: none;
+    padding: 0;
+}
+
+.ativi-item {
+    margin-bottom: 25px; 
+    padding-left: 15px;
+    padding-bottom: 5px;
+    border-left: 4px solid #8F4A3C;
+    transition: background-color 0.3s ease;
+}
+
+.ativi-item:hover {
+    background-color: #fafafa;
+}
+
+/* Título da atividade */
+.ativi-titulo {
+    font-size: 1.15em;
+    font-weight: 600;
+    color: #222;
+    margin: 0 0 5px 0;
+}
+
+/* Detalhes ativ. */
+.ativi-detalhe {
+    font-size: 0.95em;
+    color: #555;
+    margin: 0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Rodapé */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    background-color: #222;
+    color: #fff;
+    font-size: 0.95em;
+    z-index: 1000;
+}
+/* Responsividade */
+@media (max-width: 1024px) {
+    .layout{
+        flex-direction: column;
+        align-items: center;
+        margin: 100px auto 50px auto; 
+        width: 95%; 
+    }
+    
+    .lateral {
+        position: static;
+        width: 90%;
+        max-width: none;
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+        margin-top: 20px;
+    }
+
+    .conhecimentos, .idiomas {
+        width: 45%;
+    }
+    
+    .conteudo-principal-wrapper {
+        width: 100%;
+        padding: 0 20px;
+    }
+
+    .formacao {
+        margin: 0;
+        padding: 30px;
+        width: auto;
+    }
+
+    .info-container {
+        margin: 20px 0;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .info-box {
+        min-width: 90%;
+        flex: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu {
+        flex-wrap: wrap;
+    }
+
+    .menu li {
+        margin: 8px;
+    }
+
+    .formacao {
+        padding: 20px;
+    }
+
+    .conhecimentos, .idiomas {
+        width: 90%;
+        margin: 10px auto;
+        flex-direction: column; 
+    }
+    
+    .idiomas .idioma {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .idioma strong, .idioma img {
+        margin-right: 0;
+        margin-bottom: 5px;
+    }
+    
+    .idioma .nivel {
+        margin-top: 10px;
+    }
+    
+    .nivel-descricao {
+        margin-left: 0;
+    }
+}

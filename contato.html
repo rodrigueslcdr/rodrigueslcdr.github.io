@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contato - Lucas Rodrigues</title>
+    <link rel="stylesheet" href="css/contato.css">
+    
+</head>
+
+<body>
+
+    <!-- Menu -->
+<header>
+    <nav>
+        <ul class="menu">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="academico.html">Formação Acadêmica</a></li>
+            <li><a href="profissional.html">Experiência Profissional</a></li>
+            <li><a href="publicacoes.html">Publicações</a></li>
+            <li><a href="contato.html" class="ativo">Contato</a></li>
+        </ul>
+    </nav>
+</header>
+
+    <!-- Box de Conteúdo -->
+    <div class="contato-container">
+        <div class="contato-info">
+            <h1>Entre em contato:</h1>
+            <div class="info-item">
+                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" alt="LinkedIn">
+                <a href="https://pt.linkedin.com/in/lucas-rodrigues-a4701b209
+" target="_blank">Lucas Rodrigues</a>
+            </div>
+            <div class="info-item">
+                <img src="https://cdn-icons-png.flaticon.com/128/542/542638.png" alt="Email">
+                <a href="mailto:up202400325@edu.letras.up.pt">E-mail Institucional</a>
+            </div>
+        </div>
+
+        <div class="formulario-contato">
+            <h2>Formulário de Contato</h2>
+            <p>Caso prefira, preencha o formulário abaixo com os seus dados, 
+                motivo do contato e com o assunto que deseja tratar comigo.</p>
+            <form action="mailto:up202400325@edu.letras.up.pt" method="POST" enctype="text/plain">
+                <div class="form-group">
+                    <label>Nome</label>
+                    <input type="text" name="nome" required>
+                </div>
+                <div class="form-group">
+                    <label>Sobrenome</label>
+                    <input type="text" name="sobrenome" required>
+                </div>
+                <div class="form-group">
+                    <label>E-mail</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label>Motivo do Contato</label>
+                    <select name="motivo" required>
+                        <option value="">Selecione...</option>
+                        <option value="Oportunidade de Pesquisa">Oportunidade de Pesquisa</option>
+                        <option value="Questões Acadêmicas">Questões Acadêmicas</option>
+                        <option value="Questões Profissionais">Questões Profissionais</option>
+                        <option value="Outro">Outro</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Observações</label>
+                    <textarea name="observacoes"></textarea>
+                </div>
+                <button type="submit">Enviar</button>
+            </form>
+        </div>
+
+        <div class="mapa-container">
+            <h2>Meu Local Atual de Estudo</h2>
+            <div class="mapa">
+                <iframe src="https://www.google.com/maps?q=41.15111228780371,-8.63259481083328&hl=pt&z=17&output=embed"
+                    allowfullscreen="" loading="lazy"></iframe>
+            </div>
+            <div class="endereco">
+                <h3>Faculdade de Letras da Universidade do Porto - FLUP</h3>
+                <p>Via Panorâmica S/N, 4150-564 Porto, Portugal</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+ <footer>
+    <p class="footer">&copy; 2025 - Desenvolvido por Lucas de C. D. R. Rodrigues</p>
+ </footer>
+
+</body>
+</html>
