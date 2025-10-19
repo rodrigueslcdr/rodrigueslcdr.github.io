@@ -87,14 +87,27 @@ header {
 
 /*  Responsividade  */
 @media (max-width: 768px) {
+    header {
+        padding: 10px 0;
+    }
+
     .menu {
-        flex-wrap: wrap;
+        flex-direction: column;  /* empilha os itens */
+        align-items: center;     /* centraliza */
+        background-color: #222;  /* mantém o fundo */
+        padding: 10px 0;
     }
 
     .menu li {
-        margin: 8px;
+        margin: 10px 0;  /* espaço entre os links */
     }
 
+    .menu a {
+        font-size: 1.1em;   /* aumenta legibilidade */
+        display: block;     /* ocupa toda a linha */
+        padding: 8px 0;
+    }
+}
 /*  Rodapé  */
 
 footer {
@@ -107,4 +120,5 @@ footer {
     color: #fff;
     font-size: 0.95em;
 }
+
 
