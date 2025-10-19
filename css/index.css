@@ -87,27 +87,29 @@ header {
 
 /*  Responsividade  */
 @media (max-width: 768px) {
-    header {
-        padding: 10px 0;
-    }
-
     .menu {
-        flex-direction: column;  /* empilha os itens */
-        align-items: center;     /* centraliza */
-        background-color: #222;  /* mantém o fundo */
-        padding: 10px 0;
+        display: flex;
+        flex-wrap: wrap;       
+        justify-content: center;
+        text-align: center;
+        padding: 0 10px;
     }
 
     .menu li {
-        margin: 10px 0;  /* espaço entre os links */
+        margin: 5px 10px;      
     }
 
     .menu a {
-        font-size: 1.1em;   /* aumenta legibilidade */
-        display: block;     /* ocupa toda a linha */
-        padding: 8px 0;
+        font-size: 0.95em;     
+        white-space: nowrap;   
+    }
+
+    .foto {
+        width: 280px;
+        height: 280px;
     }
 }
+
 /*  Rodapé  */
 
 footer {
@@ -120,5 +122,6 @@ footer {
     color: #fff;
     font-size: 0.95em;
 }
+
 
 
