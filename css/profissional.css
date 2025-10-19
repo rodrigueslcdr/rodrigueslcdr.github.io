@@ -92,6 +92,25 @@ header {
     font-weight: 600;
 }
 
+/* Responsividade */
+@media (max-width: 768px) {
+.menu {
+        display: flex;
+        flex-wrap: wrap;       
+        justify-content: center;
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    .menu li {
+        margin: 5px 10px;      
+    }
+
+    .menu a {
+        font-size: 0.95em;     
+        white-space: nowrap;   
+    }
+
 /* Rodapé */
 footer {
     position: fixed;
@@ -103,3 +122,4 @@ footer {
     color: #fff;
     font-size: 0.95em;
 }
+
