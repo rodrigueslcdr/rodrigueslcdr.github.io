@@ -662,6 +662,8 @@
                             fill: false // definição do contorno
                         }
                     }).addTo(map);
+
+                    map.fitBounds(suffolkLayer.getBounds());
                 })
                 .catch(err => console.error('Erro ao carregar Suffolk:', err));
         }
@@ -809,3 +811,4 @@
 
 
 </html>
+
