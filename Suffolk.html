@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Mapa de Infrações Sanitárias - Boston</title>
+
+
+    <!-- Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Fullscreen plugin -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@1.6.0/Control.FullScreen.css">
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.fullscreen@1.6.0/Control.FullScreen.js"></script>
+
+    <!-- Marker Cluster -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
+
+    <style>
+        body {
+            font-family: "Segoe UI", sans-serif;
+            background-color: #f5f5f0;
+            color: #333;
+            margin: 0;
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        header {
+            background-color: #222;
+            padding: 15px 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 2000;
+        }
+
+
+        .menu {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .menu li {
+            margin: 0 20px;
+            position: relative;
+            /* Para o submenu ser posicionado em relação ao item */
+        }
+
+        .menu a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            font-size: 1.05em;
+        }
+
+        .menu a:hover,
+        .menu a.ativo {
+            color: #f4a261;
+        }
+
+        /* Estilo para o item Portfólio com submenu */
+        .submenu>a {
+            cursor: pointer;
+        }
+
+        .submenu .sub-menu {
+            display: none;
+            /* Submenu fica escondido inicialmente */
+            position: absolute;
+            top: 100%;
+            /* Posiciona o submenu logo abaixo do item */
+            left: 0;
+            list-style: none;
+            padding: 0;
+            background-color: #333;
+            border-radius: 4px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            /* Garante que o submenu fique acima de outros elementos */
+            min-width: 180px;
+            /* Garante que o submenu tenha uma largura mínima */
+            width: 220px;
+            /* Aumenta a largura para espalhar mais o conteúdo */
+        }
+
+        .submenu:hover .sub-menu {
+            display: block;
+            /* Exibe o submenu ao passar o mouse */
+        }
+
+        .sub-menu li a {
+            padding: 15px 30px;
+            /* Aumentando o padding */
+            color: #fff;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.85em;
+            display: block;
+            /* Garante que o texto ocupe toda a largura disponível */
+            text-align: left;
+            /* Alinha o texto à esquerda */
+            white-space: normal;
+            /* Permite que o texto quebre em várias linhas, se necessário */
+            border-bottom: 1px solid #fff;
+            /* Linha branca separando os itens */
+        }
+
+
+        .sub-menu li:last-child a {
+            border-bottom: none;
+            /* Remove a linha do último item */
+        }
+
+
+        /* Seção do mapa */
+        .map-section {
+            background-color: #f5f5f0;
+            padding: 20px 0 80px 0;
+        }
+
+        .map-box {
+            background-color: #fff;
+            max-width: 1200px;
+            margin: 0 auto 40px auto;
+            padding: 30px 20px 30px 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .map-box h1 {
+            margin-top: 0;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+
+        .map-wrapper {
+            position: relative;
+        }
+
+
+        #map {
+            height: 600px;
+            width: 100%;
+            display: block;
+        }
+
+        /* Estilo da legenda */
+        .info.legend {
+            background: white;
+            padding: 8px 10px;
+            border-radius: 6px;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            font-size: 0.85em;
+            line-height: 1.3;
+        }
+
+        /* Controle de busca */
+        .leaflet-control.custom-control {
+            background: white;
+            padding: 6px 8px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+            font-size: 0.9em;
+
+        }
+
+        .leaflet-control-fullscreen {
+            margin-top: 40px;
+        }
+
+
+        /* Input da busca */
+        .leaflet-control.custom-control input {
+            width: 100%;
+            border: none;
+            outline: none;
+        }
+
+        .leaflet-top {
+            top: 0;
+        }
+
+        .leaflet-top .leaflet-control.custom-control {
+            margin-top: -60px;
+            margin-left: 60px;
+        }
+
+        /* Alinhamento do filtro de anos */
+        .leaflet-top.leaflet-right .leaflet-control.custom-control {
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        /* Autocomplete da busca */
+        .autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 2px;
+        }
+
+        /* Itens da lista de autocomplete */
+        .autocomplete div {
+            padding: 6px 8px;
+            cursor: pointer;
+            font-size: 1.25em;
+            line-height: 1.3;
+
+        }
+
+        .autocomplete div strong {
+            font-weight: 600;
+            color: #e34234;
+        }
+
+
+        .autocomplete div:hover {
+            background-color: #cce4ff;
+
+        }
+
+
+        .leaflet-control-fullscreen {
+            margin-top: 60px;
+            z-index: 1200;
+        }
+
+        /* Seção "Sobre o mapa" */
+        .sobre-mapa {
+            max-width: 1000px;
+            margin: 20px auto 0 auto;
+            text-align: justify;
+            line-height: 1.6;
+        }
+
+        .sobre-mapa p {
+            margin-bottom: 10px;
+        }
+
+        /* Customização do Pop-up */
+        .popupCustom .leaflet-popup-content-wrapper {
+            max-width: 650px;
+        }
+
+        .popupCustom .leaflet-popup-content {
+            max-width: 650px;
+            max-height: 520px;
+            overflow-y: auto;
+        }
+
+        /* Tabelas do pop-up */
+        .popup-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .popup-table td,
+        .popup-table th {
+            border: 1px solid #ccc;
+            padding: 6px;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            word-break: break-word;
+        }
+
+        .popup-table td {
+            vertical-align: top;
+            line-height: 1.4;
+            font-size: 0.95em;
+        }
+
+
+        .popup-table th:nth-child(1),
+        .popup-table td:nth-child(1) {
+            width: 20%;
+        }
+
+        .popup-table th:nth-child(2),
+        .popup-table td:nth-child(2) {
+            width: 25%;
+            white-space: nowrap;
+        }
+
+        .popup-table th:nth-child(3),
+        .popup-table td:nth-child(3) {
+            width: 55%;
+        }
+
+        .collapsible-header {
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 2px;
+            background: #eee;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .collapsible-content {
+            display: none;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 8px;
+            padding-right: 4px;
+        }
+
+
+        .leaflet-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        .leaflet-fullscreen-on #map {
+            height: 100vh !important;
+            width: 100vw !important;
+        }
+
+
+        /* Rodapé fixo */
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 20px;
+            background-color: #222;
+            color: #fff;
+            font-size: 0.95em;
+            z-index: 1500;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="academico.html">Formação Acadêmica</a></li>
+                <li><a href="profissional.html">Experiência Profissional</a></li>
+                <li><a href="publicacoes.html">Publicações</a></li>
+                <li class="submenu">
+                    <a href="#" class="ativo">Portfólio </a>
+                    <ul class="sub-menu">
+                        <li><a href="Suffolk.html" class="ativo">Infrações Sanitárias em Suffolk (EUA)</a></li>
+                        <li><a href="mapeia_sm.html">Mapeia Santa Marta</a></li>
+                    </ul>
+                </li>
+                <li><a href="contato.html">Contato</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- SEÇÃO DO MAPA -->
+    <section class="map-section">
+        <div class="map-box">
+            <h1>Mapa de Infrações Sanitárias - Suffolk (EUA)</h1>
+
+            <div class="map-wrapper">
+                <div id="map"></div>
+
+            </div>
+
+            <div class="sobre-mapa">
+                <h3>Descrição do WebSIG</h3>
+
+                <p>
+                    Este mapa interativo apresenta estabelecimentos comerciais no condado de Suffolk (EUA) que receberam
+                    infrações por parte da vigilância sanitária local, permitindo explorar espacialmente onde e com que
+                    frequência essas ocorrências foram registradas ao longo do período 2006-2020.
+                </p>
+                <p>
+                    Cada estabelecimento autuado é representado por um ícone de círculo que varia de tamanho em
+                    função da quantidade de infrações recebidas no ano selecionado. A coloração dos círculos é
+                    determinada em função do tipo de infração que foi lavrada ao proprietário do estabelecimento.
+
+                </p>
+
+                <p>
+                    A depender da escala de zoom escolhida pelo usuário, é possível verificar as regiões do
+                    condado que mais concentram comércios autuados por meio da integração da funcionalidade
+                    Marker Cluster às camadas de estabelecimentos carregadas no mapa.
+                </p>
+
+
+                <p>
+                    Se um estabelecimento recebeu infrações leves, o círculo correspondente passa a ser colorido com a
+                    cor verde. Infrações médias são simbolizadas com a coloração amarela e infrações graves
+                    são coloridas de vermelho. No caso de infrações de múltiplas categorias, prevalece a
+                    cor da de maior gravidade.
+                </p>
+
+                <p>
+                    O usuário pode pesquisar um estabelecimento específico ou um endereço de preferência diretamente
+                    na barra de pesquisa situada no canto superior esquerdo do mapa. Ao selecionar uma propriedade
+                    comercial, um pop-up com as diferentes categorias de infrações aparece com as informações
+                    do tipo, data e descrição das desconformidades identificadas nos negócios multados.
+                </p>
+
+
+                <p>
+                    A filtragem de anos, localizada no campo superior direito do mapa, permite ao usuário acessar a
+                    base de empreendimentos autuados durante o período de abrangencia mencionado no início do texto.
+                    O referido websig ainda conta com uma legenda no canto inferior direito e um ícone de acesso à
+                    funcionalidade de tela cheia, caso o usuário queira ter a visualização completa da área, no canto
+                    superior esquerdo, situado logo abaixo dos controles de zoom do mapa.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- RODAPÉ -->
+    <footer>
+        © 2025 - Desenvolvido por Lucas de C. D. R. Rodrigues
+    </footer>
+
+    <!-- SCRIPTS LEAFLET -->
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+
+    <script>
+
+        /* Adição de zoom fixo e elementos do mapa */
+        var map = L.map('map').setView([42.3601, -71.0589], 11);
+
+        var searchControl = L.control({ position: 'topleft' });
+
+        searchControl.onAdd = function () {
+            const div = L.DomUtil.create('div', 'leaflet-control custom-control');
+
+            div.innerHTML = `
+        <input type="text" id="search-input" placeholder="Buscar estabelecimento...">
+        <div id="autocomplete-list" class="autocomplete"></div>
+    `;
+
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+
+        searchControl.addTo(map);
+
+        var yearControl = L.control({ position: 'topright' });
+
+        yearControl.onAdd = function () {
+            const div = L.DomUtil.create('div', 'leaflet-control custom-control');
+
+            let options = ``;
+            for (let y = 2006; y <= 2020; y++) {
+                options += `<option value="${y}">${y}</option>`;
+            }
+
+            div.innerHTML = `
+        Ano:
+        <select id="year-select">${options}</select>
+    `;
+
+            L.DomEvent.disableClickPropagation(div);
+            return div;
+        };
+
+        yearControl.addTo(map);
+
+
+
+        L.control.fullscreen({
+            position: 'topleft',
+            forceSeparateButton: true
+        }).addTo(map);
+
+        map.on('fullscreenchange', function () {
+            setTimeout(function () {
+                map.invalidateSize();
+            }, 200);
+        });
+
+        /* Adição de basemap */
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap',
+            maxZoom: 19
+        }).addTo(map);
+
+        /* Criação de variáveis clusterizadas para estabelecimentos infratores */
+
+        var markers = L.markerClusterGroup({
+            spiderfyOnEveryZoom: true,
+            showCoverageOnHover: false,
+            maxClusterRadius: 50
+        });
+
+        let geojsonLayer = null;
+        let establishments = [];
+        let markerIndex = {};
+
+
+        /* Função do pop-up e estruturação das informações*/
+        function createPopup(feature) {
+            let html = `<strong>${feature.properties.businessname}</strong><br>` +
+                `${feature.properties.address || ""}, ${feature.properties.city || ""}
+    <hr>`;
+
+            const levels = {
+                'Leve': [],
+                'Média': [],
+                'Grave': []
+            };
+
+            feature.properties.violations.forEach(v => {
+                if (levels[v.level]) {
+                    levels[v.level].push(v);
+                }
+            });
+
+
+            for (let lvl in levels) {
+                if (levels[lvl].length > 0) {
+                    html += `
+            <div class="collapsible-header">
+                + Infrações ${lvl}s (${levels[lvl].length})
+            </div>
+
+            <div class="collapsible-content">
+                <table class="popup-table">
+                    <tr>
+                        <th>Tipo</th>
+                        <th>Autuação</th>
+                        <th>Descrição</th>
+                    </tr>
+        `;
+
+                    levels[lvl].forEach(v => {
+                        html += `
+                <tr>
+                    <td>${v.desc || "Sem dados disponíveis"}</td>
+                    <td>${v.date || "Sem dados disponíveis"}</td>
+                    <td>${v.comments || "Sem dados disponíveis"}</td>
+                </tr>
+            `;
+                    });
+
+                    html += `
+                </table>
+            </div>
+        `;
+                }
+            }
+
+            return html;
+        }
+
+        /* Padronização do tamanho e da cor do identificador com base no tipo e qtde de infrações */
+        function getCircleStyle(feature) {
+            const radius = Math.max(8, feature.properties.viol_count * 0.3);
+            let color;
+            switch (feature.properties.gravidade_max) {
+                case 1: color = 'green'; break;
+                case 2: color = 'orange'; break;
+                case 3: color = 'red'; break;
+                default: color = 'blue';
+            }
+            return {
+                radius: radius,
+                fillColor: color,
+                color: '#000',
+                weight: 1,
+                fillOpacity: 0.7
+            };
+        }
+
+        //Legenda única para os mapas
+        var legend = L.control({ position: 'bottomright' });
+
+        legend.onAdd = function () {
+            const div = L.DomUtil.create('div', 'info legend');
+            div.innerHTML = `
+    <div style="font-weight:bold; margin-bottom:4px;">Tipos de infrações</div>
+    <div style="margin-bottom:4px;">
+        <span
+            style="display:inline-block;width:12px;height:12px;border-radius:50%;background:green;margin-right:6px;"></span>
+        Infrações leves
+    </div>
+    <div style="margin-bottom:4px;">
+        <span
+            style="display:inline-block;width:12px;height:12px;border-radius:50%;background:orange;margin-right:6px;"></span>
+        Infrações médias
+    </div>
+    <div style="margin-bottom:4px;">
+        <span
+            style="display:inline-block;width:12px;height:12px;border-radius:50%;background:red;margin-right:6px;"></span>
+        Infrações graves
+    </div>
+
+    <div style="font-weight:bold; margin:6px 0 4px 0;">Quantidade de infrações</div>
+    <div style="display:inline-block; width:36px; height:24px; position:relative; margin-right:8px;">
+        <!-- círculo grande (muitas infrações) -->
+        <span style="
+    position:absolute;
+    bottom:0; left:0;
+    width:24px; height:24px;
+    border-radius:50%;
+    border:2px solid #999;
+  "></span>
+
+        <!-- círculo médio (quantidade intermediária) -->
+        <span style="
+    position:absolute;
+    bottom:0; left:4px;
+    width:16px; height:16px;
+    border-radius:50%;
+    border:2px solid #999;
+  "></span>
+
+        <!-- círculo pequeno (poucas infrações) -->
+        <span style="
+    position:absolute;
+    bottom:0; left:8px;
+    width:8px; height:8px;
+    border-radius:50%;
+    border:2px solid #999;
+  "></span>
+    </div>
+    <span style="display:inline-block; font-size:0.85em; max-width:140px; vertical-align:bottom;">
+        Círculos maiores representam estabelecimentos com mais infrações.
+    </span>
+    <div style="font-weight:bold; margin:6px 0 4px 0;">Limites administrativos</div>
+    <div style="margin-top:6px;">
+        <span
+            style="display:inline-block;width:18px;height:0;border-top:2px solid #aa0022;margin-right:6px;vertical-align:middle;"></span>
+        Condado de Suffolk (EUA)
+    </div>
+    `;
+            return div;
+        };
+
+        legend.addTo(map);
+
+        /* Inclusão da feição do condado de Suffolk (EUA) */
+        let suffolkLayer = null;
+
+        function loadSuffolkBoundary() {
+            fetch('./Suffolk/geojson/suffolk_county.geojson') // ajuste o caminho
+                .then(r => r.json())
+                .then(geo => {
+                    if (suffolkLayer) {
+                        map.removeLayer(suffolkLayer);
+                    }
+                    suffolkLayer = L.geoJSON(geo, {
+                        style: {
+                            color: '#aa0022', // cor do traçado do condado
+                            weight: 3,
+                            fill: false // definição do contorno
+                        }
+                    }).addTo(map);
+                })
+                .catch(err => console.error('Erro ao carregar Suffolk:', err));
+        }
+
+        /* Carregamento dos layers de infração por ano */
+        function loadGeoJSON(year) {
+            const path = `./Suffolk/anos_agregados/crimes_Boston_${year}.geojson`;
+            fetch(path)
+                .then(r => r.json())
+                .then(data => {
+                    markers.clearLayers();
+                    markerIndex = {};
+
+                    establishments = data.features.map(f => ({
+                        id: f.properties.property_id,
+                        label: `${f.properties.businessname} – ${f.properties.address || "Sem endereço"}`,
+                        search: `${f.properties.businessname} ${f.properties.address || ""}`.toLowerCase()
+                    }));
+
+
+                    geojsonLayer = L.geoJSON(data, {
+                        pointToLayer: function (feature, latlng) {
+                            return L.circleMarker(latlng, getCircleStyle(feature));
+                        },
+                        onEachFeature: function (feature, layer) {
+
+                            layer.bindPopup(createPopup(feature), {
+                                maxWidth: 650,
+                                minWidth: 450,
+                                maxHeight: 520,
+                                className: 'popupCustom'
+                            });
+
+                            layer.on('popupopen', function (e) {
+                                const popupEl = e.popup.getElement();
+                                if (!popupEl) return;
+
+                                const headers = popupEl.querySelectorAll('.collapsible-header');
+                                headers.forEach(header => {
+                                    header.onclick = function () {
+                                        const content = header.nextElementSibling;
+                                        content.style.display =
+                                            content.style.display === 'block' ? 'none' : 'block';
+                                    };
+                                });
+                            });
+
+                            const key = feature.properties.property_id;
+                            markerIndex[key] = layer;
+
+                        }
+
+                    });
+
+                    markers.addLayer(geojsonLayer);
+                    map.addLayer(markers);
+                })
+                .catch(err => console.error("Erro ao carregar o GeoJSON: ", err));
+        }
+
+        // Eventos de popup
+        function addPopupEvents() {
+            map.on('popupopen', function (e) {
+                const popupEl = e.popup.getElement();
+                if (!popupEl) return;
+
+                const headers = popupEl.querySelectorAll('.collapsible-header');
+                headers.forEach(header => {
+                    header.onclick = function () {
+                        const content = header.nextElementSibling;
+                        content.style.display =
+                            content.style.display === 'block' ? 'none' : 'block';
+                    };
+                });
+            });
+        }
+
+        // Popular seletor de anos
+        const yearSelect = document.getElementById("year-select");
+
+        yearSelect.addEventListener("change", () => {
+            loadGeoJSON(yearSelect.value);
+
+            // limpa parâmetros de busca
+            inp.value = "";
+            list.innerHTML = "";
+            list.style.display = "none";
+        });
+
+        // Autocomplete da busca
+        const inp = document.getElementById("search-input");
+        const list = document.getElementById("autocomplete-list");
+
+        function highlight(text, term) {
+            const regex = new RegExp(`(${term})`, 'gi');
+            return text.replace(regex, '<strong>$1</strong>');
+        }
+
+        inp.addEventListener("input", function () {
+            const val = this.value.toLowerCase();
+            list.innerHTML = "";
+
+            if (val.length < 1) {
+                list.style.display = "none";
+                return;
+            }
+
+            const matches = establishments
+                .filter(e => e.search.includes(val))
+
+
+            matches.forEach(e => {
+                const item = document.createElement("div");
+
+                item.innerHTML = highlight(e.label, val);
+
+                item.onclick = function () {
+                    inp.value = e.label;
+                    list.style.display = "none";
+
+                    const marker = markerIndex[e.id];
+
+                    if (marker) {
+                        markers.zoomToShowLayer(marker, function () {
+                            map.setView(marker.getLatLng(), 18, { animate: true });
+                            marker.openPopup();
+                        });
+                    }
+
+                };
+
+                list.appendChild(item);
+            });
+
+            list.style.display = matches.length > 0 ? "block" : "none";
+        });
+
+        // Inicialização do mapa
+        addPopupEvents();
+        loadGeoJSON(2006);
+        loadSuffolkBoundary();
+    </script>
+
+</body>
+
+</html>

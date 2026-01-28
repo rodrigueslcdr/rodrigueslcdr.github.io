@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeia Santa Marta</title>
+
+    <link rel="stylesheet" href="Penaguiao/css/smp2.css">
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <!-- Leaflet Draw -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css" />
+    <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+
+    <script src="https://unpkg.com/@turf/turf/turf.min.js"></script>
+
+    <link rel="stylesheet"
+        href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css" />
+    <script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js">
+    </script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css">
+    <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <script src="https://unpkg.com/leaflet.vectorgrid/dist/Leaflet.VectorGrid.bundled.js"></script>
+
+
+
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul class="menu">
+                <li><a href="index.html">Início</a></li>
+                <li><a href="academico.html">Formação Acadêmica</a></li>
+                <li><a href="profissional.html">Experiência Profissional</a></li>
+                <li><a href="publicacoes.html">Publicações</a></li>
+                <li class="submenu">
+                    <a href="#" class="ativo">Portfólio </a>
+                    <ul class="sub-menu">
+                        <li><a href="Suffolk.html">Infrações Sanitárias em Suffolk (EUA)</a></li>
+                        <li><a href="mapeia_sm.html" class="ativo">Mapeia Santa Marta</a></li>
+                    </ul>
+                </li>
+                <li><a href="contato.html">Contato</a></li>
+                <li><a href="#" onclick="abrirLogin()">Área Privada</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="smp">
+
+        <h1>Projeto Mapeia Santa Marta</h1>
+
+        <div class="layout-main">
+            <div class="mapa">
+                <div id="map"></div>
+            </div>
+
+
+            <div id="dashboard" class="dashboard">
+                <h2>Indicadores dos Movimentos</h2>
+                <div id="dashboard-info">
+                    Sem seleção: informação de todas as feições visíveis no ano.
+                </div>
+
+                <div class="chart-box chart-wide">
+                    <canvas id="chart-elevacao"></canvas>
+                </div>
+
+                <div class="chart-box">
+                    <canvas id="chart-declive"></canvas>
+                </div>
+
+                <div class="chart-box">
+                    <canvas id="chart-aspecto"></canvas>
+                </div>
+
+
+                <div class="chart-box chart-wide">
+                    <canvas id="chart-uso-solo"></canvas>
+                </div>
+
+
+
+            </div>
+
+        </div>
+
+        <div class="analise">
+
+
+            <section class="analise-bloco">
+                <h3>O Projeto</h3>
+                <p>
+                    O <strong>Mapeia Santa Marta</strong> é um projeto de análise espacial cujo
+                    objetivo é disponibilizar informações fiáveis, sistematizadas e atualizadas sobre a ocorrência de
+                    <a href="https://arcg.is/1D49ff2" target="_blank" rel="noopener noreferrer"
+                        class="link-externo">
+                       <strong>movimentos de vertente</strong> <span class="link-icone">↗</span>
+                    </a>
+                    no município
+                    de
+                    Santa Marta de Penaguião.
+                </p>
+
+                <p>
+                    A escolha deste território deve-se à existência de um inventário detalhado
+                    de eventos registados entre 2005 e 2016, à elevada suscetibilidade geomorfológica
+                    do município e ao potencial impacto destes fenómenos sobre atividades económicas
+                    estratégicas, nomeadamente a agricultura de cultura permanente.
+                </p>
+
+                <p>
+                    O conhecimento espacial e temporal das áreas afetadas é fundamental para apoiar
+                    políticas públicas, o ordenamento do território e a mitigação de impactos
+                    ambientais, sociais e económicos.
+                </p>
+            </section>
+
+            <section class="analise-bloco">
+                <h3>Como Funciona</h3>
+                <p>
+                    O projeto integra um <strong>WebSIG interativo</strong> com um
+                    <strong>dashboard analítico sincronizado</strong>. O mapa permite visualizar
+                    os movimentos de vertente ao longo do tempo, consultar informação detalhada
+                    de cada ocorrência, filtrar eventos por tipologia e aceder a camadas temáticas
+                    como elevação, declive, orientação de vertente, uso do solo e infraestrutura
+                    viária potencialmente impactada.
+                </p>
+
+                <p>
+                    O dashboard apresenta indicadores quantitativos associados às áreas afetadas,
+                    agregando informação altimétrica, morfométrica e de uso e ocupação do solo.
+                    As análises podem ser realizadas por períodos específicos ou por seleção direta
+                    de eventos no mapa.
+                </p>
+            </section>
+
+            <section class="analise-bloco">
+            <h3>Fonte de Dados</h3>
+            <p>
+                Os dados dos inventários de movimentos de vertente provêm de pesquisa publicada
+                por <a href="https://www.tandfonline.com/doi/full/10.1080/19475705.2016.1250116#abstract"
+                    target="_blank" rel="noopener noreferrer">
+                    Pereira et al. (2017)
+                </a>.
+                Uma análise mais atualizada, realizada em Janeiro de 2026, será integrada ao
+                WebSIG em breve.
+            </p>
+            </section>
+
+            <section class="analise-bloco">
+                <h3>Valor estratégico e potencial económico</h3>
+                <p>
+                    Ao integrar inventários históricos, variáveis ambientais e infraestrutura
+                    crítica, o <strong>Mapeia Santa Marta</strong> constitui uma ferramenta de apoio
+                    à decisão com elevado potencial estratégico. A plataforma contribui para a
+                    identificação de padrões espaciais de risco, para o planeamento territorial
+                    e para a redução de perdas económicas associadas a eventos futuros.
+                </p>
+            </section>
+
+            <section class="analise-bloco">
+                <h3>Próximos Passos e Replicabilidade</h3>
+                <p>
+                    Como evolução do projeto, prevê-se a incorporação de uma componente participativa,
+                    permitindo o registo contínuo de novos eventos com validação técnica posterior.
+                    A estrutura do WebSIG é modular e replicável, podendo ser adaptada a outros
+                    municípios ou regiões com características semelhantes.
+                </p>
+            </section>
+
+        </div>
+
+    </div>
+
+    <!-- RODAPÉ -->
+    <footer>
+        © 2025 - Desenvolvido por Lucas de C. D. R. Rodrigues
+    </footer>
+
+
+
+    <!-- ================= SCRIPT ================= -->
+
+    <script>
+        /* ================= CLASSIFICAÇÃO ================= */
+        function classificarTipo(textoRaw) {
+            if (!textoRaw) return "Outros";
+            let t = textoRaw.trim().toLowerCase();
+            const superf = [
+                "deslizamento superficial",
+                "deslizamentos superficiais",
+                "deslizamento superficial ;dep solifluxivo",
+                "deslizamento superficial anterior a 2005",
+                "deslizamento superficial em muro",
+                "deslizamento superficial planar",
+                "deslizamento superficial reactivado em 23-01-2009"];
+
+            const transl = [
+                "deslizamanto translacional superficial",
+                "deslizamento superficial translacional",
+                "deslizamento translacional superficial",
+                "deslizamento translacional; dep. solifluxivo > 3m"];
+
+            const rotac = ["deslizamento rotacional; 2/3 anos"
+
+            ];
+
+            if (superf.some(x => t.includes(x))) return "Deslizamento superficial";
+            if (transl.some(x => t.includes(x))) return "Deslizamento translacional";
+            if (rotac.some(x => t.includes(x))) return "Deslizamento rotacional";
+            return "Outros";
+        }
+
+        /* ==========PALETA DE CORES ======== */
+        const tipoColors = {
+            "Deslizamento superficial": "#e41a1c",
+            "Deslizamento translacional": "#377eb8",
+            "Deslizamento rotacional": "#4daf4a",
+            "Outros": "#999999"
+        };
+
+        /* ========== ELEVAÇÃO (CLASSES + CORES) ========= */
+
+        
+        const CLASSES_ELEVACAO = [
+            "<200 m",
+            "200–400 m",
+            "400–600 m",
+            "600–800 m",
+            "800–1000 m",
+            "1000–1200 m",
+            "1200–1400 m",
+            ">1400 m"
+        ];
+
+        const CORES_ELEVACAO = {
+            "<200 m": "#709959",
+            "200–400 m": "#9dc379",
+            "400–600 m": "#c0e192",
+            "600–800 m": "#dfef96",
+            "800–1000 m": "#f1e48c",
+            "1000–1200 m": "#e9c083",
+            "1200–1400 m": "#cc9a7a",
+            ">1400 m": "#b07b6f"
+        };
+
+        /* ========== DECLIVE (CLASSES + CORES) ========= */
+
+        const CLASSES_DECLIVE = [
+            "<5°",
+            "5-10°",
+            "10-15°",
+            "15-20°",
+            "20-25°",
+            "25-30°",
+            ">30°"
+        ];
+
+        const CORES_DECLIVE = {
+            "<5°": "#0571b0",
+            "5-10°": "#63a9cf",
+            "10-15°": "#b4d6e6",
+            "15-20°": "#fff2cc",
+            "20-25°": "#f5c0a9",
+            "25-30°": "#e66e61",
+            ">30°": "#ca0020"
+        };
+
+        /* ========== ASPETO (CLASSES + CORES) ========= */
+
+        const CLASSES_ASPETO = [
+            "N", "NE", "L", "SE",
+            "S", "SO", "O", "NO"
+        ];
+
+        const CORES_ASPETO = {
+            "N": "#ff2b18",
+            "NE": "#fab721",
+            "L": "#f2fe2a",
+            "SE": "#00fc22",
+            "S": "#08fcfd",
+            "SO": "#33b3fd",
+            "O": "#5813fc",
+            "NO": "#ff27fc"
+        };
+
+
+        /* ========== LULAC (CLASSES + CORES) ========= */
+
+        const CLASSES_LULAC = [
+            "Vinhas",
+            "Olivais",
+            "Matos",
+            "Florestas de pinheiro bravo",
+            "Pomares",
+            "Outros"
+        ];
+
+        const CORES_LULAC = {
+            "Vinhas": "#7b3294",
+            "Olivais": "#c2a5cf",
+            "Matos": "#a6dba0",
+            "Florestas de pinheiro bravo": "#1b7837",
+            "Pomares": "#fdae61",
+            "Outros": "#999999"
+        };
+
+        function getLULACColor(classe) {
+            return CORES_LULAC[classe] || CORES_LULAC["Outros"];
+        }
+
+
+        /* ========== VIAS AFETADAS (CLASSES + CORES) ========= */
+        function getBufferColor(buffer) {
+            const b = Number(buffer);
+
+            if (b === 10) return "#1a9850";
+            if (b === 15) return "#fee08b";
+            if (b === 30) return "#d73027";
+            return "#999999";
+        }
+
+
+        function classificarVia(fclass) {
+            if (!fclass) return "Outras";
+
+            if (["motorway", "trunk", "primary"].includes(fclass))
+                return "Primária";
+
+            if (["secondary", "tertiary"].includes(fclass))
+                return "Secundária";
+
+            if (["residential", "unclassified"].includes(fclass))
+                return "Terciária / Residencial";
+
+            return "Outras";
+        }
+
+
+        function getViaWeight(fclass) {
+            if (["motorway", "trunk", "primary"].includes(fclass)) return 5;
+            if (["secondary", "tertiary"].includes(fclass)) return 4;
+            if (["residential", "unclassified"].includes(fclass)) return 3;
+            return 2;
+        }
+
+        function getViaDash(fclass) {
+            if (["track", "service", "path"].includes(fclass)) return "4,4";
+            return null;
+        }
+
+
+        /* ================= MAPA ================= */
+        const map = L.map("map", { fullscreenControl: true })
+            .setView([41.2083, -7.7826], 12);
+
+        // ================= DASHBOARD vs MAPA =================
+        const dashboard = document.getElementById("dashboard");
+
+        // Impede que eventos do dashboard se sobreponham ao mapa
+        L.DomEvent.disableClickPropagation(dashboard);
+        L.DomEvent.disableScrollPropagation(dashboard);
+
+
+        /* ================= BASEMAPS ================= */
+        const esriBasemap = L.tileLayer(
+            "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+            {
+                attribution: "© Esri"
+            }
+        ).addTo(map);
+
+        const elevacaoBasemap = L.tileLayer(
+            "Penaguiao/raster/tiles//elev/{z}/{x}/{y}.png",
+            {
+                attribution: "Elevação",
+                minZoom: 12,
+                maxZoom: 18
+            }
+        );
+
+
+        /* ================= GRUPOS ================= */
+        const grupos = {
+            "Deslizamento superficial": L.layerGroup().addTo(map),
+            "Deslizamento translacional": L.layerGroup().addTo(map),
+            "Deslizamento rotacional": L.layerGroup().addTo(map),
+            "Outros": L.layerGroup().addTo(map)
+        };
+
+        // === Camadas adicionais ===
+
+        const decliveTiles = L.tileLayer(
+            "Penaguiao/raster/tiles/slp/{z}/{x}/{y}.png",
+            {
+                attribution: "Declividade",
+                minZoom: 12,
+                maxZoom: 18
+            }
+        );
+
+        const aspectoTiles = L.tileLayer(
+            "Penaguiao/raster/tiles/asp/{z}/{x}/{y}.png",
+            {
+                attribution: "Orientação de Vertentes",
+                minZoom: 12,
+                maxZoom: 18
+            }
+        );
+
+        const lulacGeojsonLayer = L.geoJSON(null, {
+            style: function (feature) {
+                return {
+                    fill: true,
+                    fillColor: getLULACColor(feature.properties.COS23_n4_L || "Outros"),
+                    fillOpacity: 0.7,
+                    stroke: true,
+                    color: "#333",
+                    weight: 0.3
+                };
+            },
+            interactive: false
+        });
+
+
+        fetch("Penaguiao/shp/SMP_COS.geojson")
+            .then(r => r.json())
+            .then(data => {
+                lulacGeojsonLayer.addData(data);
+                console.log("Uso do solo GeoJSON carregado");
+            })
+            .catch(err => console.error("Erro ao carregar uso do solo:", err));
+
+
+
+        let viasData = null;
+        let bufferSelecionado = 30; // valor inicial
+
+        const viasImpactadas = L.geoJSON(null, {
+            filter: function (feature) {
+                return feature.properties.buffer === bufferSelecionado;
+            },
+            style: function (f) {
+                return {
+                    color: getBufferColor(bufferSelecionado),
+                    weight: getViaWeight(f.properties.fclass),
+                    dashArray: getViaDash(f.properties.fclass),
+                    opacity: 0.9
+                };
+            },
+            onEachFeature: function (f, l) {
+                l.bindPopup(`
+            <b>Via:</b> ${f.properties.name || "Sem nome"}<br>
+            <b>Classe:</b> ${f.properties.fclass}<br>
+            <b>Buffer:</b> ${bufferSelecionado} m<br>
+            <b>Comprimento afetado:</b> ${Number(f.properties.length_mov).toFixed(1)} m
+        `);
+            }
+        });
+
+        function atualizarVias() {
+            if (!viasData) return;
+
+            viasImpactadas.clearLayers();
+            viasImpactadas.addData(viasData);
+        }
+
+
+        fetch("Penaguiao/shp/FINAL_vias_impactadas.geojson")
+            .then(r => r.json())
+            .then(j => {
+                viasData = j;
+                viasImpactadas.addData(viasData);
+                console.log("Vias carregadas:", j.features.length);
+            })
+            .catch(err => console.error("Erro ao carregar vias:", err));
+
+
+        const camadaContribuicoes = new L.FeatureGroup().addTo(map);
+
+        let features = [], anoMin = 9999, anoMax = 0;
+
+        let selecionadas = [];   // array de Feature (GeoJSON) selecionadas
+
+        let featuresVisiveis = [];   // feições atualmente visíveis no mapa (ano + filtros)
+
+        let elevacaoData = null;   // JSON de elevação carregado em memória
+
+        let decliveData = null; //IDEM para o JSON de slope
+
+        let aspectoData = null; //IDEM para o JSON de slope
+
+        let lulacGlobal = null; //IDEM PARA LULAC Global
+        let lulacPorFID = null; //Também para LULAC por ID
+
+
+        function toggleSelecao(id, layer) {
+            const idx = selecionadas.findIndex(f => f.properties.__id === id);
+
+            if (idx >= 0) {
+                // ===== DESELECIONAR =====
+                const feat = selecionadas[idx];
+                const tipo = classificarTipo(feat.properties?.OBS_TIPOLO);
+                const cor = tipoColors[tipo];
+
+                selecionadas.splice(idx, 1);
+
+                layer.setStyle({
+                    weight: 2,
+                    color: cor,
+                    fillColor: cor,        // 🔑 ESSENCIAL
+                    fillOpacity: 0.75
+                });
+
+            } else {
+                // ===== SELECIONAR =====
+                const feat = features.find(f => f.properties.__id === id);
+                if (!feat) return;
+
+                selecionadas.push(feat);
+
+                layer.setStyle({
+                    weight: 4,
+                    color: "#ffff00",
+                    fillColor: "#ffff00",
+                    fillOpacity: 0.9
+                });
+            }
+
+            atualizarDashboard(selecionadas);
+        }
+
+
+        let charts = {};         // objetos Chart.js
+
+
+        const grupoCluster = L.markerClusterGroup({
+            interactive: false,
+            spiderfyOnMaxZoom: true,
+            showCoverageOnHover: false,
+            maxClusterRadius: 60,
+            iconCreateFunction: function (cluster) {
+                const count = cluster.getChildCount();
+
+                const color =
+                    count > 20 ? "#800026" :
+                        count > 10 ? "#BD0026" :
+                            count > 5 ? "#E31A1C" :
+                                count > 2 ? "#FC4E2A" :
+                                    "#FD8D3C";
+
+                return L.divIcon({
+                    html: `<div style="
+        background:${color};
+        color:white;
+        border-radius:50%;
+        width:40px;
+        height:40px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        font-weight:bold;
+      ">${count}</div>`,
+                    className: "",
+                    iconSize: [40, 40]
+                });
+                grupoCluster.addTo(map)
+
+            }
+        });
+
+
+
+        const inventarioLayer = L.layerGroup(Object.values(grupos));
+        inventarioLayer.addTo(map);
+
+
+        // === Base maps e overlays para o control de camadas ===
+        const baseMaps = {
+            "Imagem de Satélite": esriBasemap,
+
+        };
+
+        const overlays = {
+            "Inventário (polígonos)": inventarioLayer,
+            "Densidade (clusters)": grupoCluster,
+            "Elevação": elevacaoBasemap,
+            "Declive": decliveTiles,
+            "Orientação de Vertentes": aspectoTiles,
+            "Uso do solo": lulacGeojsonLayer,
+            "Vias potencialmente impactadas": viasImpactadas
+
+        };
+
+        const layerControl = L.control.layers(baseMaps, overlays, {
+            position: "topright",
+            collapsed: true
+        }).addTo(map);
+
+        /* ================= CONTROLE DA LEGENDA DE ELEVAÇÃO ================= */
+
+        map.on("overlayadd", function (e) {
+            if (e.name === "Elevação") {
+                legendElevacao.addTo(map);
+            }
+        });
+
+        map.on("overlayremove", function (e) {
+            if (e.name === "Elevação") {
+                map.removeControl(legendElevacao);
+            }
+        });
+
+
+
+
+        /* ================= FUNÇÕES ================= */
+        function extrairAno(d) {
+            if (!d) return null;
+            const ano = Number(d);
+            return Number.isFinite(ano) ? ano : null;
+        }
+
+
+        /* ========== CLUSTERS ========= */
+        function criarCluster(featuresFiltradas) {
+
+            grupoCluster.clearLayers();
+
+            featuresFiltradas.forEach((f, idx) => {
+
+                // 1Garantia mínima
+                if (!f || !f.geometry) {
+                    console.warn("Feature inválida (sem geometria):", idx, f);
+                    return;
+                }
+
+                // Criar layer temporário
+                let layerTemp;
+                try {
+                    layerTemp = L.geoJSON(f);
+                } catch (e) {
+                    console.warn("Erro ao criar geoJSON:", idx, e, f);
+                    return;
+                }
+
+                // Bounds válidos? Verificar...
+                const bounds = layerTemp.getBounds();
+                if (!bounds.isValid()) {
+                    console.warn("Bounds inválidos:", idx, f);
+                    return;
+                }
+
+                // Centro seguro
+                const centro = bounds.getCenter();
+                if (
+                    !Number.isFinite(centro.lat) ||
+                    !Number.isFinite(centro.lng)
+                ) {
+                    console.warn("Centro inválido:", idx, centro);
+                    return;
+                }
+
+                // Tipo do mov
+                const tipo = classificarTipo(f.properties?.OBS_TIPOLO);
+
+                // Marker cluster para as feições
+                const marker = L.circleMarker([centro.lat, centro.lng], {
+                    radius: 6,
+                    fillColor: tipoColors[tipo],
+                    fillOpacity: 0.7,
+                    color: "#333",
+                    weight: 1
+                });
+
+                grupoCluster.addLayer(marker);
+            });
+
+            console.log("Clusters ativos:", grupoCluster.getLayers().length);
+        }
+
+
+        /* ================= INVENTÁRIO ================= */
+        fetch("Penaguiao/inventario/FINAL_Inventario_2016.geojson")
+            .then(r => r.json())
+            .then(data => {
+
+                features = data.features;
+
+                features.forEach((f, i) => {
+                    f.properties.__id = i;
+                });
+
+                inicializarCharts();
+
+                // 1) Extrair anos únicos existentes
+                const anosDisponiveis = [];
+
+                features.forEach(f => {
+                    const a = extrairAno(f.properties.REGISTRO);
+                    if (a && !anosDisponiveis.includes(a)) {
+                        anosDisponiveis.push(a);
+                    }
+                });
+
+                // 2) Ordenar
+                anosDisponiveis.sort((a, b) => a - b);
+
+                // 3) Criar slider com anos reais
+                criarSlider(anosDisponiveis);
+
+                // 4) Mostrar mapa no último ano disponível
+                atualizarMapa(anosDisponiveis[anosDisponiveis.length - 1]);
+                map.addLayer(grupoCluster);
+
+                // ===============================
+                // SINCRONIZAÇÃO INICIAL
+                // ===============================
+
+                // iniciar em modo acumulado
+                modoAcumulado = true;
+
+                // legenda do slider na inicialização
+                const spanAno = document.getElementById("ano");
+                spanAno.innerText = `${anosDisponiveis[0]}–${anosDisponiveis[anosDisponiveis.length - 1]}`;
+
+                // slider desativado
+                document.getElementById("slider").disabled = true;
+
+                // checkbox marcado
+                document.getElementById("chkTodos").checked = true;
+            });
+
+
+        // ================= ELEVAÇÃO (JSON) =================
+        fetch("Penaguiao/dash_info/elevacao.json")
+            .then(r => r.json())
+            .then(json => {
+                elevacaoData = json;
+                console.log("Elevação carregada:", elevacaoData);
+                atualizarDashboard(featuresVisiveis);
+            })
+            .catch(err => {
+                console.error("Erro ao carregar elevação:", err);
+
+            });
+
+        // ================= DECLIVE (JSON) =================
+        fetch("Penaguiao/dash_info/slope.json")
+            .then(r => r.json())
+            .then(json => {
+                decliveData = json;
+                console.log("Declive carregado:", decliveData);
+                atualizarDashboard(featuresVisiveis);
+            })
+            .catch(err => {
+                console.error("Erro ao carregar declive:", err);
+            });
+
+        // ================= ASPETO (JSON) =================
+        fetch("Penaguiao/dash_info/aspect.json")
+            .then(r => r.json())
+            .then(json => {
+                aspectoData = json;
+                console.log("Aspeto carregado:", aspectoData);
+                atualizarDashboard(featuresVisiveis);
+            })
+            .catch(err => {
+                console.error("Erro ao carregar declive:", err);
+            });
+
+        // ================= LULAC (JSON) =================
+        fetch("Penaguiao/dash_info/lulac_global_top5.json")
+            .then(r => r.json())
+            .then(json => {
+                lulacGlobal = json;
+                console.log("Lulac Global carregado:", lulacGlobal);
+                atualizarDashboard(featuresVisiveis);
+            })
+            .catch(err => {
+                console.error("Erro ao carregar declive:", err);
+            });
+
+        fetch("Penaguiao/dash_info/lulac_por_fid.json")
+            .then(r => r.json())
+            .then(json => {
+                lulacPorFID = json;
+                console.log("Lulac FID carregado:", lulacPorFID);
+                atualizarDashboard(featuresVisiveis);
+            })
+            .catch(err => {
+                console.error("Erro ao carregar declive:", err);
+            });
+
+        function inicializarCharts() {
+            const ctxElevacao = document.getElementById("chart-elevacao").getContext("2d");
+            const ctxDeclive = document.getElementById("chart-declive").getContext("2d");
+            const ctxAspecto = document.getElementById("chart-aspecto").getContext("2d");
+            const ctxUso = document.getElementById("chart-uso-solo").getContext("2d");
+
+
+
+            charts.elevacao = new Chart(ctxElevacao, {
+                type: "bar",
+                data: {
+                    labels: CLASSES_ELEVACAO,
+                    datasets: [{
+                        label: "Área (m²)",
+                        data: Array(CLASSES_ELEVACAO.length).fill(0),
+                        backgroundColor: CLASSES_ELEVACAO.map(c => CORES_ELEVACAO[c])
+                    }]
+                },
+                options: {
+                    indexAxis: "y",
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: "nearest",
+                        intersect: false
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Distribuição por Altimetria', 
+                            font: { size: 14, weight: 'bold', family: 'Segoe UI' },
+                            padding: { top: 10, bottom: 20 },
+                            color: '#333'
+                        },
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: "rgba(0,0,0,0.85)",
+                            titleFont: { size: 12 },
+                            bodyFont: { size: 11 },
+                            padding: 8,
+                            cornerRadius: 6,
+                            callbacks: {
+                                label: ctx => `${ctx.label}: ${ctx.raw.toFixed(1)} m²`
+                            }
+                        }
+
+                    },
+
+                    scales: {
+                        y: { // Controle das fontes do eixo vertical
+                            ticks: {
+                                font: {
+                                    size: 10, 
+                                    family: "'Segoe UI', sans-serif"
+                                },
+                                autoSkip: false // Garante que todos os nomes das classes apareçam
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: "Área (m²)",
+                                font: { size: 11 }
+                            },
+                            ticks: { font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+            charts.declive = new Chart(ctxDeclive, {
+                type: "bar",
+                data: {
+                    labels: CLASSES_DECLIVE,
+                    datasets: [{
+                        label: "Área (m²)",
+                        data: Array(CLASSES_DECLIVE.length).fill(0),
+                        backgroundColor: CLASSES_DECLIVE.map(c => CORES_DECLIVE[c])
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: "nearest",
+                        intersect: false
+                    },
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Classes de Declive',
+                            font: { size: 14, weight: 'bold', family: 'Segoe UI' },
+                            padding: { top: 10, bottom: 20 },
+                            color: '#333'
+                        },
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: "rgba(0,0,0,0.85)",
+                            titleFont: { size: 12 },
+                            bodyFont: { size: 11 },
+                            padding: 8,
+                            cornerRadius: 6,
+                            callbacks: {
+                                label: ctx => `${ctx.label}: ${ctx.raw.toFixed(1)} m²`
+                            }
+                        }
+
+                    },
+                    scales: {
+                        x: {
+                            ticks: {
+                                autoSkip: false,
+                                font: { size: 10 } 
+                            }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: "Área (m²)",
+                                font: { size: 11 }
+                            },
+                            ticks: { font: { size: 10 } } 
+                        }
+                    }
+                }
+            });
+
+            charts.aspecto = new Chart(ctxAspecto, {
+                type: "polarArea",
+                data: {
+                    labels: CLASSES_ASPETO,
+                    datasets: [{
+                        label: "Área (m²)",
+                        data: Array(CLASSES_ASPETO.length).fill(0),
+                        backgroundColor: CLASSES_ASPETO.map(c => CORES_ASPETO[c]),
+                        borderColor: "#ffffff",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: "nearest",
+                        intersect: false
+                    }, plugins: {
+                        title: {
+                            display: true,
+                            text: 'Orientação de Vertentes', 
+                            font: { size: 14, weight: 'bold', family: 'Segoe UI' },
+                            padding: { top: 10, bottom: 20 },
+                            color: '#333'
+                        },
+                        legend: {
+                            position: "right",
+                            labels: {
+                                boxWidth: 12
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: "rgba(0,0,0,0.85)",
+                            titleFont: { size: 12 },
+                            bodyFont: { size: 11 },
+                            padding: 8,
+                            cornerRadius: 6,
+                            callbacks: {
+                                label: ctx => `${ctx.label}: ${ctx.raw.toFixed(1)} m²`
+                            }
+                        }
+
+                    }
+                }
+            });
+
+            charts.uso = new Chart(ctxUso, {
+                type: "doughnut",
+                data: {
+                    labels: CLASSES_LULAC,
+                    datasets: [{
+                        data: Array(CLASSES_LULAC.length).fill(0),
+                        backgroundColor: CLASSES_LULAC.map(c => CORES_LULAC[c]),
+                        borderColor: "#ffffff",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            left: 10,
+                            right: 20, 
+                            top: 10,
+                            bottom: 10
+                        }
+                    },
+                    interaction: {
+                        mode: "nearest",
+                        intersect: false
+                    },
+                    cutout: "60%",
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Uso do Solo (2023)', 
+                            font: { size: 14, weight: 'bold', family: 'Segoe UI' },
+                            padding: { top: 10, bottom: 20 },
+                            color: '#333'
+                        },
+                        legend: {
+                            pposition: "right",
+                            align: "center", //Centraliza a legenda verticalmente em relação ao círculo
+                            labels: {
+                                boxWidth: 10,
+                                font: { size: 10 },
+                                padding: 10      
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => {
+                                    const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+                                    const perc = total > 0 ? (ctx.raw / total * 100).toFixed(1) : 0;
+                                    return `${ctx.label}: ${ctx.raw.toFixed(1)} m² (${perc}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+        }
+
+
+
+        /* ================= MAPA POR ANO ================= */
+        function atualizarMapa(ano) {
+            Object.values(grupos).forEach(g => g.clearLayers());
+            selecionadas = [];
+
+            const filtradas = [];
+
+            const contagem = {
+                "Deslizamento superficial": 0,
+                "Deslizamento translacional": 0,
+                "Deslizamento rotacional": 0,
+                "Outros": 0
+            };
+
+            // 1) Desenhar feições do inventário, respeitando modoAcumulado
+            features.forEach(f => {
+                const a = extrairAno(f.properties.REGISTRO);
+                if (!a) return;
+
+                // FILTRO DE ANO
+                if (!modoAcumulado && a !== ano) return;   // só ano exato
+                if (modoAcumulado && a > ano) return;      // todos os anos <= ano
+
+                const tipo = classificarTipo(f.properties.OBS_TIPOLO);
+                if (legendaAtiva && tipo !== legendaAtiva) return;
+
+                contagem[tipo]++;
+
+                const area = f.properties.SHAPE_AREA
+                    ? Number(f.properties.SHAPE_AREA).toFixed(2)
+                    : "–";
+
+                const id = f.properties.__id;
+
+                const layer = L.geoJSON(f, {
+                    style: {
+                        color: tipoColors[tipo],
+                        fillColor: tipoColors[tipo],
+                        fillOpacity: 0.75,
+                        weight: 2
+                    }
+                }).bindPopup(`
+      <table style="width:260px">
+        <tr><th>ID</th><td>${f.properties.FID || "-"}</td></tr>
+        <tr><th>Local</th><td>${f.properties.OBS_LOCALI || "-"}</td></tr>
+        <tr><th>Tipo</th><td>${tipo}</td></tr>
+        <tr><th>Área (m²)</th><td>${f.properties.AREA || "N/A"}</td></tr>
+        <tr><th>Ano</th><td>${a}</td></tr>
+      </table>
+    `);
+
+                layer.eachLayer(l => {
+                    l.on("click", () => toggleSelecao(id, l));
+                });
+
+                layer.addTo(grupos[tipo]);
+                filtradas.push(f);
+            });
+
+            // 2) Atualizar legenda principal
+            atualizarLegenda(contagem);
+
+            if (legendaAtiva) {
+                Object.keys(grupos).forEach(k => {
+                    if (k === legendaAtiva) map.addLayer(grupos[k]);
+                    else map.removeLayer(grupos[k]);
+                });
+            }
+
+            document.querySelectorAll(".legend-col.seletor").forEach(el => {
+                el.style.opacity =
+                    legendaAtiva && el.dataset.tipo !== legendaAtiva ? "0.4" : "1";
+            });
+
+
+            // 3) Atualizar clusters e dashboard com o mesmo conjunto
+            featuresVisiveis = filtradas;
+            criarCluster(filtradas);
+            atualizarDashboard(filtradas);
+
+
+        }
+
+
+        /* ================= AOI + MÁSCARA ================= */
+        fetch("Penaguiao/limites/SMP.geojson")
+            .then(r => r.json())
+            .then(aoi => {
+                L.geoJSON(aoi, {
+                    style: { color: "#ae24b5", weight: 3, fillOpacity: 0 }
+                }).addTo(map).bringToFront();
+
+                criarMascaraAOI(aoi);
+            });
+
+        function criarMascaraAOI(aoi) {
+            const mundo = [[-90, -180], [-90, 180], [90, 180], [90, -180]];
+            const buracos = [];
+            aoi.features.forEach(f => {
+                if (f.geometry.type === "Polygon") buracos.push(f.geometry.coordinates[0]);
+                if (f.geometry.type === "MultiPolygon")
+                    f.geometry.coordinates.forEach(p => buracos.push(p[0]));
+            });
+
+            L.geoJSON({
+                type: "Feature",
+                geometry: { type: "Polygon", coordinates: [mundo, ...buracos] }
+            }, {
+                interactive: false,
+                style: { fillColor: "#000", fillOpacity: .55, stroke: false }
+            }).addTo(map).bringToBack();
+
+        }
+
+        /* ================= LEGENDA ================= */
+        const legend = L.control({ position: "bottomright" });
+        legend.onAdd = function () {
+            const div = L.DomUtil.create("div", "legend");
+            div.innerHTML = `
+  <div class="legend-title">Classes de Movimentos</div>
+
+  <div class="legend-col seletor" data-tipo="Deslizamento superficial">
+   <span class="legend-color" style="background:${tipoColors["Deslizamento superficial"]}"></span>
+   Deslizamento superficial (0)
+  </div>
+
+  <div class="legend-col seletor" data-tipo="Deslizamento translacional">
+   <span class="legend-color" style="background:${tipoColors["Deslizamento translacional"]}"></span>
+   Deslizamento translacional (0)
+  </div>
+
+  <div class="legend-col seletor" data-tipo="Deslizamento rotacional">
+   <span class="legend-color" style="background:${tipoColors["Deslizamento rotacional"]}"></span>
+   Deslizamento rotacional (0)
+  </div>
+
+  <div class="legend-col seletor" data-tipo="Outros">
+   <span class="legend-color" style="background:${tipoColors["Outros"]}"></span>
+   Outros (0)
+  </div>
+
+  <div class="legend-col" style="margin-top:3px;">
+   <span class="legend-color"
+    style="background:none;width:22px;height:0;border-top:3px solid #ae24b5">
+   </span>
+   Município (AOI)
+  </div>
+ `;
+            return div;
+        };
+        legend.addTo(map);
+
+        function atualizarLegenda(c) {
+            document.querySelectorAll(".legend-col.seletor").forEach(el => {
+                const tipo = el.dataset.tipo;
+                el.innerHTML = `
+   <span class="legend-color" style="background:${tipoColors[tipo]}"></span>
+   ${tipo} (${c[tipo]})
+  `;
+            });
+        }
+
+        
+        // === Legenda secundária: Aspeto ===
+        const legendAspecto = L.control({ position: "bottomright" });
+
+        legendAspecto.onAdd = function () {
+            const div = L.DomUtil.create("div", "legend legend-secundaria");
+
+            div.innerHTML = `
+                <div class="legend-title">Orientação de Vertentes</div>
+                <div class="legend-elevacao-grid">
+                    ${CLASSES_ASPETO.map(classe => `
+                        <div>
+                            <span class="legend-color"
+                                style="background:${CORES_ASPETO[classe]}"></span>
+                            ${classe}
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+
+            return div;
+        };
+
+
+        /* ================= LEGENDA SECUNDÁRIA: ELEVAÇÃO ================= */
+
+        const legendElevacao = L.control({ position: "bottomright" });
+
+        legendElevacao.onAdd = function () {
+            const div = L.DomUtil.create("div", "legend legend-secundaria");
+
+            div.innerHTML = `
+                <div class="legend-title">Elevação (m)</div>
+                <div class="legend-elevacao-grid">
+                    ${CLASSES_ELEVACAO.map(classe => `
+                        <div>
+                            <span class="legend-color"
+                                style="background:${CORES_ELEVACAO[classe]}"></span>
+                            ${classe}
+                        </div>
+                    `).join("")}
+                </div>
+`           ;
+
+            return div;
+        };
+
+
+        /* ================= LEGENDA SECUNDÁRIA: DECLIVE ================= */
+        const legendDeclive = L.control({ position: "bottomright" });
+
+        legendDeclive.onAdd = function () {
+            const div = L.DomUtil.create("div", "legend legend-secundaria");
+
+            div.innerHTML = `
+                <div class="legend-title">Declive (°)</div>
+                <div class="legend-elevacao-grid">
+                    ${CLASSES_DECLIVE.map(classe => `
+                <div>
+                    <span class="legend-color"
+                          style="background:${CORES_DECLIVE[classe]}"></span>
+                    ${classe}
+                </div>
+            `).join("")}
+        </div>
+    `;
+
+            return div;
+        };
+
+        /* ================= LEGENDA SECUNDÁRIA: LULAC ================= */
+        const legendLULAC = L.control({ position: "bottomright" });
+
+        legendLULAC.onAdd = function () {
+            const div = L.DomUtil.create("div", "legend legend-secundaria");
+
+            const classes = [
+                "Vinhas",
+                "Olivais",
+                "Matos",
+                "Florestas de pinheiro bravo",
+                "Pomares",
+                "Outros"
+            ];
+
+            div.innerHTML = `
+                <div class="legend-title">Uso do solo (COS 2023)</div>
+                <div class="legend-elevacao-grid">
+                    ${classes.map(c => `
+                        <div>
+                            <span class="legend-color" style="background:${getLULACColor(c)}"></span>
+                            ${c}
+                        </div>
+                    `).join("")}
+                </div>
+            `;
+
+            return div;
+        };
+
+        /* ================= LEGENDA SECUNDÁRIA: VIAS ================= */
+        const legendVias = L.control({ position: "bottomright" });
+
+        legendVias.onAdd = function () {
+
+            const div = L.DomUtil.create("div", "legend legend-secundaria");
+
+            div.innerHTML = `
+        <div class="legend-title">Vias potencialmente afetadas</div>
+
+        <div class="legend-subtitle">Raio</div>
+
+        <label class="legend-radio">
+            <input type="radio" name="buffer" value="10" ${bufferSelecionado === 10 ? "checked" : ""}>
+            <span class="legend-line" style="background:${getBufferColor(10)}"></span>
+            10 m
+        </label>
+
+        <label class="legend-radio">
+            <input type="radio" name="buffer" value="15" ${bufferSelecionado === 15 ? "checked" : ""}>
+            <span class="legend-line" style="background:${getBufferColor(15)}"></span>
+            15 m
+        </label>
+
+        <label class="legend-radio">
+            <input type="radio" name="buffer" value="30" ${bufferSelecionado === 30 ? "checked" : ""}>
+            <span class="legend-line" style="background:${getBufferColor(30)}"></span>
+            30 m
+        </label>
+        </div>
+    `;
+
+            //Evita que clicar na legenda mexa no mapa
+            L.DomEvent.disableClickPropagation(div);
+
+            return div;
+        };
+
+
+
+        // ===============================
+        // LISTENER GLOBAL – BUFFER DAS VIAS
+        // ===============================
+
+        document.addEventListener("change", function (e) {
+
+            if (e.target.name === "buffer") {
+
+                bufferSelecionado = Number(e.target.value);
+
+                atualizarVias();
+            }
+
+        });
+
+
+        document.addEventListener("click", function (e) {
+            const item = e.target.closest(".legend-col.seletor");
+            if (!item) return;
+
+            const tipo = item.dataset.tipo;
+
+            // Toggle do filtro da legenda
+            legendaAtiva = (legendaAtiva === tipo) ? null : tipo;
+
+            // Ano atualmente ativo no slider / dashboard
+            const anoAtual = getAnoAtual();
+
+            //Recalcula mapa, clusters e gráficos
+            atualizarMapa(anoAtual);
+
+            // Feedback visual na legenda
+            document.querySelectorAll(".legend-col.seletor").forEach(el => {
+                el.style.opacity =
+                    legendaAtiva && el.dataset.tipo !== legendaAtiva ? "0.4" : "1";
+            });
+        });
+
+        // Ativar/desativar legendas secundárias conforme as camadas
+        map.on("overlayadd", function (e) {
+            if (e.name === "Uso do solo") {
+                legendLULAC.addTo(map);
+            }
+            if (e.name === "Declive") {
+                legendDeclive.addTo(map);
+            }
+            if (e.name === "Orientação de Vertentes") {
+                legendAspecto.addTo(map);
+            }
+            if (e.name === "Vias potencialmente impactadas") {
+                legendVias.addTo(map);
+            }
+        });
+
+        map.on("overlayremove", function (e) {
+            if (e.name === "Uso do solo") {
+                map.removeControl(legendLULAC);
+            }
+            if (e.name === "Declive") {
+                map.removeControl(legendDeclive);
+            }
+            if (e.name === "Orientação de Vertentes") {
+                map.removeControl(legendAspecto);
+            }
+            if (e.name === "Vias potencialmente impactadas") {
+                map.removeControl(legendVias);
+            }
+        });
+
+
+
+        /* ================= FILTRAGEM VIA LEGENDA ================= */
+        let legendaAtiva = null;
+        let modoAcumulado = true;
+
+        // ─────────────────────────────────────────────
+        // Utilitário: ano atualmente selecionado
+        // ─────────────────────────────────────────────
+        function getAnoAtual() {
+            const txt = document.getElementById("ano")?.innerText;
+            if (!txt) return null;
+
+            // modo intervalo (2005–2016)
+            if (txt.includes("–")) {
+                return Number(txt.split("–")[1]); // último ano
+            }
+
+            return Number(txt);
+        }
+
+
+        /* ================= SLIDER ================= */
+        function criarSlider(anos) {
+
+            const sliderCtrl = L.control({ position: "bottomleft" });
+
+            sliderCtrl.onAdd = function () {
+
+                const div = L.DomUtil.create("div", "slider-ano");
+
+                div.innerHTML = `
+      <div style="margin-bottom:4px;">
+        <strong>Ano:</strong> <span id="ano">${anos[anos.length - 1]}</span>
+      </div>
+
+      <label style="font-size:12px; display:block; margin-bottom:4px;">
+        <input type="checkbox" id="chkTodos" checked>
+        Mostrar todos os anos
+      </label>
+
+
+      <input
+        id="slider"
+        type="range"
+        min="0"
+        max="${anos.length - 1}"
+        step="1"
+        value="${anos.length - 1}"
+        style="width:100%;"
+        disabled
+      >
+
+      <div class="slider-labels">
+        ${anos.map(a => `<span>${a}</span>`).join("")}
+      </div>
+    `;
+
+                L.DomEvent.disableClickPropagation(div);
+                return div;
+            };
+
+            sliderCtrl.addTo(map);
+
+            document.getElementById("chkTodos").addEventListener("change", e => {
+                modoAcumulado = e.target.checked;
+
+                const slider = document.getElementById("slider");
+                slider.disabled = modoAcumulado;
+
+                const spanAno = document.getElementById("ano");
+
+                if (modoAcumulado) {
+                    // Mostrar intervalo completo
+                    spanAno.innerText = `${anos[0]}–${anos[anos.length - 1]}`;
+
+                    // Forçar atualização correta do mapa
+                    atualizarMapa(anos[anos.length - 1]);
+
+                } else {
+                    // Volta ao modo ano único
+                    const idx = Number(slider.value);
+                    const ano = anos[idx];
+
+                    spanAno.innerText = ano;
+                    atualizarMapa(ano);
+                }
+            });
+
+
+            document.addEventListener("input", e => {
+                if (e.target.id === "slider") {
+                    const idx = Number(e.target.value);
+                    const ano = anos[idx];
+                    document.getElementById("ano").innerText = ano;
+                    atualizarMapa(ano);
+                }
+            });
+        }
+
+
+        /* ========== AGREGAÇÃO DE ELEVAÇÃO ========= */
+        function agregarElevacao(jsonElevacao, features) {
+
+            const resultado = {};
+            CLASSES_ELEVACAO.forEach(c => resultado[c] = 0);
+
+            features.forEach(f => {
+                const id = String(f.properties.FID ?? f.properties.__id);
+                if (!jsonElevacao[id]) return;
+
+                CLASSES_ELEVACAO.forEach(classe => {
+                    resultado[classe] += jsonElevacao[id][classe] || 0;
+                });
+            });
+
+            return resultado;
+        }
+        /* ========== AGREGAÇÃO DE DECLIVE ========= */
+        function agregarDeclive(jsonDeclive, features) {
+
+            const resultado = {};
+            CLASSES_DECLIVE.forEach(c => resultado[c] = 0);
+
+            features.forEach(f => {
+                const id = String(f.properties.FID ?? f.properties.__id);
+                if (!jsonDeclive[id]) return;
+
+                CLASSES_DECLIVE.forEach(classe => {
+                    resultado[classe] += jsonDeclive[id][classe] || 0;
+                });
+            });
+
+            return resultado;
+        }
+        /* ========== AGREGAÇÃO DE ASPETO ========= */
+        function agregarAspeto(jsonAspeto, features) {
+
+            const resultado = {};
+            CLASSES_ASPETO.forEach(c => resultado[c] = 0);
+
+            features.forEach(f => {
+                const id = String(f.properties.FID ?? f.properties.__id);
+                if (!jsonAspeto[id]) return;
+
+                CLASSES_ASPETO.forEach(classe => {
+                    resultado[classe] += jsonAspeto[id][classe] || 0;
+                });
+            });
+
+            return resultado;
+        }
+
+        /* ========== AGREGAÇÃO DE LULAC ========= */
+        function agregarLULAC(jsonLulacPorFID, features) {
+
+            const resultado = {};
+            CLASSES_LULAC.forEach(c => resultado[c] = 0);
+
+            features.forEach(f => {
+                const id = String(f.properties.FID ?? f.properties.__id);
+                const dados = jsonLulacPorFID[id];
+                if (!dados) return;
+
+                Object.keys(dados).forEach(classe => {
+                    if (resultado[classe] !== undefined) {
+                        resultado[classe] += dados[classe];
+                    } else {
+                        resultado["Outros"] += dados[classe];
+                    }
+                });
+            });
+
+            return resultado;
+        }
+
+
+
+        /* ================= ATUALIZA DASHBOARD ================= */
+        function atualizarDashboard(featuresParaAnalisar) {
+            if (!featuresParaAnalisar || !featuresParaAnalisar.length) {
+                document.getElementById("dashboard-info").innerText =
+                    "Sem seleção: agregando todas as feições visíveis no ano.";
+            } else {
+                document.getElementById("dashboard-info").innerText =
+                    `Selecionadas ${featuresParaAnalisar.length} feições.`;
+            }
+
+            const fts = (featuresParaAnalisar && featuresParaAnalisar.length)
+                ? featuresParaAnalisar
+                : (featuresVisiveis || []);
+
+            // ===== ELEVAÇÃO =====
+            if (elevacaoData) {
+
+                const dadosElev = agregarElevacao(
+                    elevacaoData,
+                    fts
+                );
+
+                charts.elevacao.data.datasets[0].data =
+                    CLASSES_ELEVACAO.map(c => dadosElev[c]);
+
+                charts.elevacao.update();
+            }
+
+
+            // ===== DECLIVE (RASTER AGREGADO) =====
+            if (decliveData) {
+
+                const dadosDeclive = agregarDeclive(
+                    decliveData,
+                    fts
+                );
+
+                charts.declive.data.datasets[0].data =
+                    CLASSES_DECLIVE.map(c => dadosDeclive[c]);
+
+                charts.declive.update();
+            }
+
+
+            // ===== ASPETO =====
+            if (aspectoData) {
+
+                const dadosAsp = agregarAspeto(
+                    aspectoData,
+                    fts
+                );
+
+                charts.aspecto.data.datasets[0].data =
+                    CLASSES_ASPETO.map(c => dadosAsp[c]);
+
+                charts.aspecto.update();
+            }
+
+
+            // ===== LULAC =====
+            // ===== USO DO SOLO (LULAC) =====
+            if (lulacPorFID && lulacGlobal) {
+
+                let dadosLulac;
+
+                if (fts.length) {
+                    // Seleção ou feições visíveis
+                    dadosLulac = agregarLULAC(lulacPorFID, fts);
+                } else {
+                    // Panorama geral do ano
+                    dadosLulac = lulacGlobal;
+                }
+
+                charts.uso.data.datasets[0].data =
+                    CLASSES_LULAC.map(c => dadosLulac[c] || 0);
+
+                charts.uso.update();
+            }
+
+
+        }
+
+
+    </script>
+
+</body>
+
+</html>
