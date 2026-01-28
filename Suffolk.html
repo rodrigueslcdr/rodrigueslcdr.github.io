@@ -649,7 +649,7 @@
         let suffolkLayer = null;
 
         function loadSuffolkBoundary() {
-            fetch('./Suffolk/geojson/suffolk_county.geojson') // ajuste o caminho
+            fetch('./Suffolk/geojson/Suffolk_county.geojson') // ajuste o caminho
                 .then(r => r.json())
                 .then(geo => {
                     if (suffolkLayer) {
@@ -806,5 +806,6 @@
     </script>
 
 </body>
+
 
 </html>
