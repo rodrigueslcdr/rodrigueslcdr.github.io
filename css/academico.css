@@ -5,7 +5,7 @@ body {
     color: #333;
     margin: 0;
     padding: 0;
-    padding-bottom: 70px; 
+    padding-bottom: 70px;
 }
 
 /* Menu */
@@ -28,6 +28,8 @@ header {
 
 .menu li {
     margin: 0 20px;
+    position: relative;
+    /* Para o submenu ser posicionado em relação ao item */
 }
 
 .menu a {
@@ -43,14 +45,68 @@ header {
     color: #f4a261;
 }
 
+/* Estilo para o item Portfólio com submenu */
+.submenu>a {
+    cursor: pointer;
+}
+
+.submenu .sub-menu {
+    display: none;
+    /* Submenu fica escondido inicialmente */
+    position: absolute;
+    top: 100%;
+    /* Posiciona o submenu logo abaixo do item */
+    left: 0;
+    list-style: none;
+    padding: 0;
+    background-color: #333;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    /* Garante que o submenu fique acima de outros elementos */
+    min-width: 180px;
+    /* Garante que o submenu tenha uma largura mínima */
+    width: 220px;
+    /* Aumenta a largura para espalhar mais o conteúdo */
+}
+
+.submenu:hover .sub-menu {
+    display: block;
+    /* Exibe o submenu ao passar o mouse */
+}
+
+.sub-menu li a {
+    padding: 15px 30px;
+    /* Aumentando o padding */
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85em;
+    display: block;
+    /* Garante que o texto ocupe toda a largura disponível */
+    text-align: left;
+    /* Alinha o texto à esquerda */
+    white-space: normal;
+    /* Permite que o texto quebre em várias linhas, se necessário */
+    border-bottom: 1px solid #fff;
+    /* Linha branca separando os itens */
+}
+
+
+.sub-menu li:last-child a {
+    border-bottom: none;
+    /* Remove a linha do último item */
+}
+
+
 /* Bloco Lateral - layout */
 .layout {
     display: flex;
-    flex-direction: row; 
+    flex-direction: row;
     justify-content: center;
     align-items: flex-start;
     max-width: 1400px;
-    margin: 80px auto 80px auto; 
+    margin: 80px auto 80px auto;
     gap: 40px;
 }
 
@@ -59,9 +115,9 @@ header {
     display: flex;
     flex-direction: column;
     gap: 40px;
-    width: 350px; 
+    width: 350px;
     position: sticky;
-    top: 80px; 
+    top: 80px;
     align-self: flex-start;
     flex-shrink: 0;
 }
@@ -71,7 +127,7 @@ header {
     background-color: #fff;
     border-radius: 12px;
     padding: 20px 25px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     flex: 1;
     display: flex;
     flex-direction: column;
@@ -79,7 +135,8 @@ header {
 }
 
 
-.conhecimentos h1, .idiomas h1 {
+.conhecimentos h1,
+.idiomas h1 {
     font-size: 1.4em;
     color: #222;
     margin-bottom: 15px;
@@ -126,23 +183,23 @@ header {
 .idioma strong {
     font-size: 1.05em;
     color: #222;
-    margin-right: 15px; 
+    margin-right: 15px;
 }
 
 
 .idioma-rating {
     display: flex;
-    flex-direction: column; 
-    align-items: center; 
-    margin-left: auto; 
-    padding-right: 5px; 
+    flex-direction: column;
+    align-items: center;
+    margin-left: auto;
+    padding-right: 5px;
 }
 
 .nivel {
     display: flex;
     gap: 3px;
-    margin-top: 5px; 
-    margin-bottom: 0; 
+    margin-top: 5px;
+    margin-bottom: 0;
 }
 
 .bar {
@@ -152,22 +209,33 @@ header {
     background-color: #ccc;
 }
 
-.full { background-color: #3fa34d; } 
-.light_green { background-color: #66ff66; } 
-.yellow { background-color: #FFDF22; } 
-.empty { background-color: #ddd; }
+.full {
+    background-color: #3fa34d;
+}
+
+.light_green {
+    background-color: #66ff66;
+}
+
+.yellow {
+    background-color: #FFDF22;
+}
+
+.empty {
+    background-color: #ddd;
+}
 
 .nivel-descricao {
     font-size: 0.9em;
     font-weight: 600;
     color: #444;
-    margin-top: 0; 
+    margin-top: 0;
     margin-bottom: 0;
 }
 
 /* Definições box conteúdo principal */
 .conteudo-principal-wrapper {
-    flex: 2; 
+    flex: 2;
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -180,9 +248,9 @@ header {
     padding: 50px 60px;
     padding-bottom: 20px;
     border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     min-height: 600px;
-    width: auto; 
+    width: auto;
     margin-left: 0;
 }
 
@@ -215,8 +283,8 @@ header {
 
 /* Cards inferiores */
 .info-container {
-    max-width: none; 
-    margin: 0; 
+    max-width: none;
+    margin: 0;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -231,14 +299,14 @@ header {
     text-align: center;
     padding: 30px 20px;
     border-radius: 14px;
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.15);
     cursor: pointer;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .info-box:hover {
     transform: translateY(-6px);
-    box-shadow: 0 5px 14px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
 }
 
 .info-box h2 {
@@ -263,7 +331,7 @@ header {
     justify-content: center;
     align-items: center;
     background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
 }
 
 .hex img {
@@ -280,7 +348,7 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(245, 245, 240, 0.97); 
+    background-color: rgba(245, 245, 240, 0.97);
     z-index: 2000;
     overflow-y: auto;
     animation: fadeIn 0.3s ease;
@@ -292,7 +360,7 @@ header {
     background-color: #fff;
     padding: 40px 50px;
     border-radius: 14px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     color: #222;
 }
 
@@ -326,6 +394,7 @@ header {
 .overlay::-webkit-scrollbar {
     width: 10px;
 }
+
 .overlay::-webkit-scrollbar-thumb {
     background-color: #000;
     border-radius: 6px;
@@ -334,7 +403,7 @@ header {
 /* Conteúdo de formação complementar */
 
 .formacao-complementar h2 {
-    font-size: 2em; 
+    font-size: 2em;
     color: #111;
     text-align: center;
     margin-bottom: 20px;
@@ -343,12 +412,12 @@ header {
 }
 
 .formacao-complementar ul {
-    list-style: none; 
+    list-style: none;
     padding: 0;
 }
 
 .curso-item {
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
     padding-left: 15px;
     padding-bottom: 5px;
     border-left: 4px solid #f4a261;
@@ -356,7 +425,7 @@ header {
 }
 
 .curso-item:hover {
-    background-color: #fafafa; 
+    background-color: #fafafa;
 }
 
 /* Título do curso/workshop */
@@ -376,7 +445,7 @@ header {
 
 /* Publicações */
 .publicacoes h2 {
-    font-size: 2em; 
+    font-size: 2em;
     color: #111;
     text-align: center;
     margin-bottom: 20px;
@@ -385,20 +454,20 @@ header {
 }
 
 .publicacoes ul {
-    list-style: none; 
+    list-style: none;
     padding: 0;
 }
 
 .publi-item {
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
     padding-left: 15px;
     padding-bottom: 5px;
-    border-left: 4px solid purple; 
+    border-left: 4px solid purple;
     transition: background-color 0.3s ease;
 }
 
 .publi-item:hover {
-    background-color: #fafafa; 
+    background-color: #fafafa;
 }
 
 /* Título da publicação */
@@ -418,7 +487,7 @@ header {
 
 /* Atividades Acadêmicas*/
 .atividades h2 {
-    font-size: 2em; 
+    font-size: 2em;
     color: #111;
     text-align: center;
     margin-bottom: 20px;
@@ -432,7 +501,7 @@ header {
 }
 
 .ativi-item {
-    margin-bottom: 25px; 
+    margin-bottom: 25px;
     padding-left: 15px;
     padding-bottom: 5px;
     border-left: 4px solid #8F4A3C;
@@ -459,8 +528,13 @@ header {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Rodapé */
@@ -473,17 +547,18 @@ footer {
     background-color: #222;
     color: #fff;
     font-size: 0.95em;
-    z-index: 1000;
+    
 }
+
 /* Responsividade */
 @media (max-width: 1024px) {
-    .layout{
+    .layout {
         flex-direction: column;
         align-items: center;
-        margin: 100px auto 50px auto; 
-        width: 95%; 
+        margin: 100px auto 50px auto;
+        width: 95%;
     }
-    
+
     .lateral {
         position: static;
         width: 90%;
@@ -494,10 +569,11 @@ footer {
         margin-top: 20px;
     }
 
-    .conhecimentos, .idiomas {
+    .conhecimentos,
+    .idiomas {
         width: 45%;
     }
-    
+
     .conteudo-principal-wrapper {
         width: 100%;
         padding: 0 20px;
@@ -514,7 +590,7 @@ footer {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .info-box {
         min-width: 90%;
         flex: none;
@@ -524,47 +600,81 @@ footer {
 @media (max-width: 768px) {
     .menu {
         display: flex;
-        flex-wrap: wrap;       
+        flex-wrap: wrap;
         justify-content: center;
         text-align: center;
         padding: 0 10px;
     }
 
     .menu li {
-        margin: 5px 10px;      
+        margin: 5px 10px;
     }
 
     .menu a {
-        font-size: 0.95em;     
-        white-space: nowrap;   
+        font-size: 0.95em;
+        white-space: nowrap;
     }
 
     .formacao {
         padding: 20px;
     }
 
-    .conhecimentos, .idiomas {
+    .conhecimentos,
+    .idiomas {
         width: 90%;
         margin: 10px auto;
-        flex-direction: column; 
+        flex-direction: column;
     }
-    
+
     .idiomas .idioma {
         flex-direction: column;
         align-items: flex-start;
     }
-    
-    .idioma strong, .idioma img {
+
+    .idioma strong,
+    .idioma img {
         margin-right: 0;
         margin-bottom: 5px;
     }
-    
+
     .idioma .nivel {
         margin-top: 10px;
     }
-    
+
     .nivel-descricao {
         margin-left: 0;
     }
 
+    /* Ajustando o submenu para telas pequenas */
+    .submenu .sub-menu {
+        position: static;
+        /* Submenu será mostrado em linha no mobile */
+        box-shadow: none;
+        /* Remover sombra em dispositivos móveis */
+        border-radius: 0;
+        width: 100%;
+        /* Submenu ocupará 100% da largura disponível */
+    }
+
+    .submenu:hover .sub-menu {
+        display: block;
+        /* Exibe o submenu normalmente em dispositivos móveis */
+    }
+
+    .sub-menu li a {
+        padding: 12px 25px;
+        /* Ajuste do padding para dispositivos móveis */
+        font-size: 0.85em;
+    }
+
+    footer {
+        position: fixed;
+        bottom: 0;
+        width: auto;
+        text-align: center;
+        padding: 15px;
+        background-color: #222;
+        color: #fff;
+        font-size: 0.95em;
+    }
 }

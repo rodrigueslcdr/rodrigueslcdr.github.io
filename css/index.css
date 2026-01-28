@@ -27,6 +27,7 @@ header {
 
 .menu li {
     margin: 0 20px;
+    position: relative; /* Para o submenu ser posicionado em relação ao item */
 }
 
 .menu a {
@@ -42,6 +43,47 @@ header {
     color: #f4a261;
 }
 
+/* Estilo para o item Portfólio com submenu */
+.submenu > a {
+    cursor: pointer;
+}
+
+.submenu .sub-menu {
+    display: none; /* Submenu fica escondido inicialmente */
+    position: absolute;
+    top: 100%; /* Posiciona o submenu logo abaixo do item */
+    left: 0;
+    list-style: none;
+    padding: 0;
+    background-color: #333;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999; /* Garante que o submenu fique acima de outros elementos */
+    min-width: 180px; /* Garante que o submenu tenha uma largura mínima */
+    width: 220px; /* Aumenta a largura para espalhar mais o conteúdo */
+}
+
+.submenu:hover .sub-menu {
+    display: block; /* Exibe o submenu ao passar o mouse */
+}
+
+.sub-menu li a {
+    padding: 15px 30px; /* Aumentando o padding */
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85em;
+    display: block; /* Garante que o texto ocupe toda a largura disponível */
+    text-align: left; /* Alinha o texto à esquerda */
+    white-space: normal; /* Permite que o texto quebre em várias linhas, se necessário */
+    border-bottom: 1px solid #fff; /* Linha branca separando os itens */
+}
+
+
+.sub-menu li:last-child a {
+    border-bottom: none; /* Remove a linha do último item */
+}
+
 /*  Box "Sobre Mim"  */
 .sobre {
     max-width: 1200px;
@@ -52,19 +94,19 @@ header {
     border-radius: 12px;
 }
 
-.texto-container p{
+.texto-container p {
     text-align: justify;
     line-height: 1.8;
 }
 
 .texto-container a {
-    color: navy; 
+    color: navy;
     text-decoration: none;
     font-weight: 600;
 }
 
 .texto-container a:visited {
-    color: #727878; 
+    color: #727878;
 }
 
 .texto-container a:hover {
@@ -85,33 +127,7 @@ header {
     border: 3px solid #ccc;
 }
 
-/*  Responsividade  */
-@media (max-width: 768px) {
-    .menu {
-        display: flex;
-        flex-wrap: wrap;       
-        justify-content: center;
-        text-align: center;
-        padding: 0 10px;
-    }
-
-    .menu li {
-        margin: 5px 10px;      
-    }
-
-    .menu a {
-        font-size: 0.95em;     
-        white-space: nowrap;   
-    }
-
-    .foto {
-        width: 280px;
-        height: 280px;
-    }
-}
-
 /*  Rodapé  */
-
 footer {
     position: fixed;
     bottom: 0;
@@ -124,4 +140,56 @@ footer {
 }
 
 
+/*  Responsividade  */
+@media (max-width: 768px) {
+.menu {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  text-align: center;
+  padding: 0 10px;
+}
+
+.menu li {
+  margin: 5px 10px;
+}
+
+.menu a {
+  font-size: 0.95em;
+  white-space: nowrap;
+}
+
+.foto {
+  width: 280px;
+  height: 280px;
+}
+
+/* Ajustando o submenu para telas pequenas */
+.submenu .sub-menu {
+  position: static; /* Submenu será mostrado em linha no mobile */
+  box-shadow: none; /* Remover sombra em dispositivos móveis */
+  border-radius: 0;
+  width: 100%; /* Submenu ocupará 100% da largura disponível */
+}
+
+.submenu:hover .sub-menu {
+  display: block; /* Exibe o submenu normalmente em dispositivos móveis */
+}
+
+.sub-menu li a {
+  padding: 12px 25px; /* Ajuste do padding para dispositivos móveis */
+  font-size: 0.85em;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 90%;
+    text-align: center;
+    padding: 20px;
+    background-color: #222;
+    color: #fff;
+    font-size: 0.95em;
+}
+}
 
