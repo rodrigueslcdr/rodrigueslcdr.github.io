@@ -1,0 +1,330 @@
+/* ================= 1. REGRAS GERAIS E RESET ================= */
+html,
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", sans-serif;
+    background-color: #f5f5f0;
+    color: #333;
+    /* 🔑 Espaço para o menu fixo não cobrir o título */
+    padding-top: 60px;
+    padding-bottom: 40px;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}
+
+/* ================= 2. MENU (FIXO) ================= */
+header {
+    background-color: #222;
+    padding: 15px 0;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+    /* Acima de tudo */
+}
+
+.menu {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.menu li {
+    margin: 0 20px;
+    position: relative;
+    /* Para o submenu ser posicionado em relação ao item */
+}
+
+.menu a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+    font-size: 1.05em;
+}
+
+.menu a:hover,
+.menu a.ativo {
+    color: #f4a261;
+}
+
+/* Estilo para o item Portfólio com submenu */
+.submenu>a {
+    cursor: pointer;
+}
+
+.submenu .sub-menu {
+    display: none;
+    /* Submenu fica escondido inicialmente */
+    position: absolute;
+    top: 100%;
+    /* Posiciona o submenu logo abaixo do item */
+    left: 0;
+    list-style: none;
+    padding: 0;
+    background-color: #333;
+    border-radius: 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    /* Garante que o submenu fique acima de outros elementos */
+    min-width: 180px;
+    /* Garante que o submenu tenha uma largura mínima */
+    width: 220px;
+    /* Aumenta a largura para espalhar mais o conteúdo */
+}
+
+.submenu:hover .sub-menu {
+    display: block;
+    /* Exibe o submenu ao passar o mouse */
+}
+
+.sub-menu li a {
+    padding: 15px 30px;
+    /* Aumentando o padding */
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.85em;
+    display: block;
+    /* Garante que o texto ocupe toda a largura disponível */
+    text-align: left;
+    /* Alinha o texto à esquerda */
+    white-space: normal;
+    /* Permite que o texto quebre em várias linhas, se necessário */
+    border-bottom: 1px solid #fff;
+    /* Linha branca separando os itens */
+}
+
+
+.sub-menu li:last-child a {
+    border-bottom: none;
+    /* Remove a linha do último item */
+}
+
+
+/* ================= 3. ESTRUTURA SMP (CONTAINER DO TÍTULO) ================= */
+.smp {
+    width: 95%;
+    max-width: 1800px;
+    margin: 30px auto;
+    padding: 28px;
+    background-color: #ffffff;
+    /* Removido fundo branco para não conflitar com a fusão */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.smp h1 {
+    text-align: center;
+    margin: 5px 0 15px 0;
+    font-size: 1.8em;
+}
+
+/* ================= 4. LAYOUT PRINCIPAL (MAPA + DASHBOARD) ================= */
+.layout-main {
+    display: flex;
+    width: 100%;
+    height: 750px;
+    gap: 0;
+    box-sizing: border-box;
+}
+
+/* MAPA */
+.mapa {
+    flex: 1.2;
+    /* Ganha mais espaço que o dashboard */
+    min-width: 0;
+    /* Impede quebra de layout */
+    height: 100%;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+    /* 🔑 Fusão: arredonda apenas os cantos superiores */
+    border-radius: 11px 0 0 0;
+    border: 2px solid black;
+    box-shadow: 0 3px 28px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+}
+
+/* DASHBOARD */
+.dashboard {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    background: #ffffff;
+    padding: 3px;
+    /* 🔑 Fusão: arredonda apenas o canto superior direito */
+    border-radius: 0 11px 0 0;
+    border: 2px solid black;
+    border-left: none;
+    /* Remove linha entre mapa e dashboard */
+    box-shadow: 0 3px 28px rgba(0, 0, 0, 0.1);
+    box-sizing: border-box;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto min-content;
+    gap: 15px;
+    overflow-y: auto;
+}
+
+/* Títulos e Gráficos no Dashboard */
+.dashboard h2,
+#dashboard-info {
+    grid-column: 1 / -1;
+}
+
+/* Container específico para o gráfico de elevação */
+.chart-wide {
+    grid-column: 1 / -1;
+    height: 220px;
+    /* Altura fixa ajuda a manter a proporção da fonte */
+    position: relative;
+    margin-top: 10px;
+}
+
+#chart-uso-solo {
+    min-height: 300px;
+    width: 100%;
+}
+
+/* Container do gráfico de uso */
+.chart-box {
+    display: relative;
+    width: 100%;
+    height: 280px;
+    margin-bottom: 10px;
+    display: block;
+    box-sizing: border-box;
+}
+
+/* Garante que o canvas não tente fugir do centro */
+.chart-box canvas {
+    max-width: 100% !important;
+    max-height: 100% !important;
+    margin: 0 auto;
+}
+
+
+/* Ajuste fino para os eixos do gráfico */
+.dashboard canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    /* Impede que o texto "estique" visualmente */
+    image-rendering: auto;
+}
+
+/* ================= 5. DIV ANÁLISE (FUSÃO INFERIOR) ================= */
+.analise {
+    background: transparent;
+    margin: 25px auto 30px auto;
+    padding: 18px;
+    width: 96%;
+    max-width: 1800px;
+    min-height: 80px;
+
+}
+
+.analise p {
+    font-size: 1.1em;
+    margin: 0;
+}
+
+/* ================= 6. COMPONENTES EXTRA (SLIDER, LEGENDAS) ================= */
+.buffer-selector {
+    margin: 10px 0;
+    font-size: 14px;
+}
+
+.legend {
+    background: #fffbe7;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    border: 1px solid lightgray;
+    z-index: 1000;
+}
+
+.legend-color {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    margin-right: 5px;
+    border-radius: 2px;
+}
+
+
+
+.slider-ano {
+    background: white;
+    padding: 8px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    min-width: 220px;
+}
+
+.slider-ano input[type="range"] {
+    width: 100%;
+    margin: 4px 0;
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: #444;
+}
+
+/* ================= 7. RODAPÉ ================= */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 20px 0;
+    background-color: #222;
+    color: #fff;
+    z-index: 3000;
+}
+
+/* ================= 8. RESPONSIVIDADE ================= */
+@media (max-width: 1024px) {
+    .layout-main {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .mapa,
+    .dashboard {
+        width: 100%;
+        height: 450px;
+        border-radius: 11px 11px 0 0;
+        border-left: 2px solid black;
+    }
+
+    .dashboard {
+        border-top: none;
+        border-radius: 0;
+        grid-template-columns: 1fr;
+    }
+
+    .analise {
+        width: 100%;
+        border-radius: 0 0 11px 11px;
+    }
+}
